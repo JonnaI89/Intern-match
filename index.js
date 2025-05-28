@@ -31,20 +31,20 @@ function updateTimerUI() {
   timerEl.textContent = `Tid: ${formatTime(timerData.seconds)}`;
 }
 
-// Denne funksjonen oppdaterer timerData.seconds basert på tidsdifferansen siden sist oppdatering
+// Oppdater timerData.seconds basert på tid som har gått siden sist oppdatering
 function updateTimerFromNow() {
   if (timerData.running && timerData.lastUpdate) {
     const now = Date.now();
     const elapsedSec = Math.floor((now - timerData.lastUpdate) / 1000);
     if (elapsedSec > 0) {
-      timerData.seconds += elapsedSec;
+      timerData.seconds += elapsedSec;   // teller opp
       timerData.lastUpdate = now;
     }
   }
   updateTimerUI();
 }
 
-// Interval for å oppdatere timer hvert 0.5 sekund
+// Kjør oppdatering jevnlig (hver 0.5 sekund)
 setInterval(() => {
   updateTimerFromNow();
 }, 500);
@@ -57,7 +57,7 @@ onValue(rootRef, (snapshot) => {
     B: { name: 'Lag B', players: [] }
   };
 
-  // Timer-data fra Firebase
+  // Hent timer-data fra Firebase, med fallback
   timerData = data.timer || { seconds: 0, running: false, lastUpdate: Date.now() };
 
   // Hvis lastUpdate ikke finnes, sett til nå
