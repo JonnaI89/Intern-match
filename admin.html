@@ -9,7 +9,9 @@
 </head>
 <body>
   <h1>Admin Kontrollpanel</h1>
-  
+
+  <div id="timerDisplay" style="font-size: 2em;">00:00</div>
+
   <div class="team" id="teamA">
     <h2>Lag A</h2>
     <label>Lag navn: <input type="text" id="teamANameInput" /></label>
@@ -17,7 +19,7 @@
     <ul id="playersAList"></ul>
     <button id="addPlayerA">Legg til spiller</button>
   </div>
-  
+
   <div class="team" id="teamB">
     <h2>Lag B</h2>
     <label>Lag navn: <input type="text" id="teamBNameInput" /></label>
@@ -28,12 +30,12 @@
 
   <h2>Score</h2>
   <div>
-    <p>Lag A: <span id="scoreA">0</span> 
-      <button onclick="changeScore('A',1)">+1</button> 
+    <p>Lag A: <span id="scoreA">0</span>
+      <button onclick="changeScore('A',1)">+1</button>
       <button onclick="changeScore('A',-1)">-1</button>
     </p>
-    <p>Lag B: <span id="scoreB">0</span> 
-      <button onclick="changeScore('B',1)">+1</button> 
+    <p>Lag B: <span id="scoreB">0</span>
+      <button onclick="changeScore('B',1)">+1</button>
       <button onclick="changeScore('B',-1)">-1</button>
     </p>
   </div>
@@ -48,4 +50,3 @@
   </div>
 </body>
 </html>
-
