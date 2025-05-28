@@ -1,27 +1,39 @@
-<!DOCTYPE html>
-<html lang="no">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Live Scoreboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <script type="module" src="index.js"></script>
-</head>
-<body>
-  <h1>Live Scoreboard</h1>
-  <div class="scoreboard">
-    <div>
-      <h2 id="teamAName">Lag A</h2>
-      <p>Score: <span id="scoreA">0</span></p>
-      <h3>Spillere:</h3>
-      <ul id="playersA"></ul>
-    </div>
-    <div>
-      <h2 id="teamBName">Lag B</h2>
-      <p>Score: <span id="scoreB">0</span></p>
-      <h3>Spillere:</h3>
-      <ul id="playersB"></ul>
-    </div>
-  </div>
-</body>
-</html>
+import { db, ref, onValue } from './firebase.js';
+
+const scoreAEl = document.getElementById('scoreA');
+const scoreBEl = document.getElementById('scoreB');
+const teamANameEl = document.getElementById('teamAName');
+const teamBNameEl = document.getElementById('teamBName');
+const playersAEl = document.getElementById('playersA');
+const playersBEl = document.getElementById('playersB');
+
+const rootRef = ref(db, '/');
+
+onValue(rootRef, (snapshot) => {
+  const data = snapshot.val() || {};
+  const score = data.score || { A: 0, B: 0 };
+  const teams = data.teams || {
+    A: { name: 'Lag A', players: [] },
+    B: { name: 'Lag B', players: [] }
+  };
+
+  scoreAEl.textContent = score.A;
+  scoreBEl.textContent = score.B;
+  teamANameEl.textContent = teams.A.name || 'Lag A';
+  teamBNameEl.textContent = teams.B.name || 'Lag B';
+
+  playersAEl.innerHTML = '';
+  playersBEl.innerHTML = '';
+
+  for (const player of teams.A.players || []) {
+    const li = document.createElement('li');
+    li.textContent = `${player.name} - Mål: ${player.goals || 0}, Assist: ${player.assists || 0}`;
+    playersAEl.appendChild(li);
+  }
+
+  for (const player of teams.B.players || []) {
+    const li = document.createElement('li');
+    li.textContent = `${player.name} - Mål: ${player.goals || 0}, Assist: ${player.assists || 0}`;
+    playersBEl.appendChild(li);
+  }
+});
