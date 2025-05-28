@@ -16,6 +16,10 @@ let data = {
   }
 };
 
+// Deaktiver inputs til data er lastet
+teamANameInput.disabled = true;
+teamBNameInput.disabled = true;
+
 const rootRef = ref(db, '/');
 
 function renderPlayers(listEl, players, team) {
@@ -103,7 +107,7 @@ function loadData() {
       data = val;
     }
 
-    // Bruk sikker tilgang med fallback
+    // Oppdater input-feltene og UI
     teamANameInput.value = (data.teams && data.teams.A && data.teams.A.name) ? data.teams.A.name : 'Lag A';
     teamBNameInput.value = (data.teams && data.teams.B && data.teams.B.name) ? data.teams.B.name : 'Lag B';
 
@@ -111,10 +115,15 @@ function loadData() {
 
     renderPlayers(playersAList, (data.teams && data.teams.A && data.teams.A.players) || [], 'A');
     renderPlayers(playersBList, (data.teams && data.teams.B && data.teams.B.players) || [], 'B');
+
+    // Aktiver input-feltene nå som data er lastet
+    teamANameInput.disabled = false;
+    teamBNameInput.disabled = false;
   });
 }
 
 window.changeScore = function(team, delta) {
+  if (!data.score) return; // Sjekk at score finnes
   data.score[team] += delta;
   if (data.score[team] < 0) data.score[team] = 0;
   updateScoreUI();
@@ -125,6 +134,8 @@ teamANameInput.onchange = () => {
   if (data.teams && data.teams.A) {
     data.teams.A.name = teamANameInput.value;
     saveData();
+  } else {
+    console.warn('Teams data ikke klar for team A');
   }
 };
 
@@ -132,6 +143,8 @@ teamBNameInput.onchange = () => {
   if (data.teams && data.teams.B) {
     data.teams.B.name = teamBNameInput.value;
     saveData();
+  } else {
+    console.warn('Teams data ikke klar for team B');
   }
 };
 
