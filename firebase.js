@@ -1,6 +1,6 @@
+// firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-
+import { getDatabase, ref, onValue, set, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDx-zN7rKyDivezJY_jpdnyB1P6dvSI9WI",
@@ -13,8 +13,7 @@ const firebaseConfig = {
   measurementId: "G-5L4K9TX51C"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-export { db, ref, onValue, set };
+export { db, ref, onValue, set, update };
