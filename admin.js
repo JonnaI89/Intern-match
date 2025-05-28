@@ -1,5 +1,6 @@
 // admin.js
-import { db, ref, onValue, set, update } from './firebase.js';
+import { db, ref, onValue, set } from './firebase.js';
+import { initTimer, startTimer, stopTimer, resetTimer, setTimerSeconds } from './timer.js';
 
 const teamANameInput = document.getElementById('teamANameInput');
 const teamBNameInput = document.getElementById('teamBNameInput');
@@ -26,7 +27,7 @@ function renderPlayers(listEl, players, team) {
   listEl.innerHTML = '';
   players.forEach((player, i) => {
     const li = document.createElement('li');
-    
+
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = player.name || '';
@@ -36,13 +37,13 @@ function renderPlayers(listEl, players, team) {
       player.name = nameInput.value;
       saveData();
     };
-    
+
     const goalsSpan = document.createElement('span');
     goalsSpan.textContent = ` Mål: ${player.goals || 0} `;
-    
+
     const assistsSpan = document.createElement('span');
     assistsSpan.textContent = ` Assist: ${player.assists || 0} `;
-    
+
     const goalBtn = document.createElement('button');
     goalBtn.textContent = '+ Mål';
     goalBtn.onclick = () => {
@@ -52,7 +53,7 @@ function renderPlayers(listEl, players, team) {
       saveData();
       renderPlayers(listEl, players, team);
     };
-    
+
     const assistBtn = document.createElement('button');
     assistBtn.textContent = '+ Assist';
     assistBtn.onclick = () => {
@@ -60,7 +61,7 @@ function renderPlayers(listEl, players, team) {
       saveData();
       renderPlayers(listEl, players, team);
     };
-    
+
     const removeBtn = document.createElement('button');
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => {
@@ -68,14 +69,14 @@ function renderPlayers(listEl, players, team) {
       saveData();
       renderPlayers(listEl, players, team);
     };
-    
+
     li.appendChild(nameInput);
     li.appendChild(goalsSpan);
     li.appendChild(assistsSpan);
     li.appendChild(goalBtn);
     li.appendChild(assistBtn);
     li.appendChild(removeBtn);
-    
+
     listEl.appendChild(li);
   });
 }
@@ -119,6 +120,9 @@ function loadData() {
     // Aktiver input-feltene nå som data er lastet
     teamANameInput.disabled = false;
     teamBNameInput.disabled = false;
+
+    // Init timer når data er lastet
+    initTimer();
   });
 }
 
@@ -172,4 +176,16 @@ document.getElementById('addPlayerB').onclick = () => {
   }
 };
 
+// Timer kontroller
+document.getElementById('startTimerBtn').onclick = () => startTimer();
+document.getElementById('stopTimerBtn').onclick = () => stopTimer();
+document.getElementById('resetTimerBtn').onclick = () => resetTimer();
+document.getElementById('setTimerBtn').onclick = () => {
+  const val = parseInt(document.getElementById('setTimerInput').value, 10);
+  if (!isNaN(val) && val >= 0) {
+    setTimerSeconds(val);
+  }
+};
+
 loadData();
+
