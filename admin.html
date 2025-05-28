@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Live Scoreboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="admin.js"></script>
+</head>
+<body>
+  <h1>Admin Kontrollpanel</h1>
+  <div class="scoreboard">
+    <div>
+      <h2>Lag A: <span id="scoreA">0</span></h2>
+      <button onclick="updateScore('A', 1)">+1</button>
+      <button onclick="updateScore('A', -1)">-1</button>
+    </div>
+    <div>
+      <h2>Lag B: <span id="scoreB">0</span></h2>
+      <button onclick="updateScore('B', 1)">+1</button>
+      <button onclick="updateScore('B', -1)">-1</button>
+    </div>
+  </div>
+</body>
+</html>
