@@ -87,7 +87,23 @@ function saveData() {
 
 function loadData() {
   onValue(rootRef, (snapshot) => {
-    data = snapshot.val() || data;
+    const val = snapshot.val();
+    
+    // Sjekk og sett standardstruktur hvis data mangler
+    if (!val || !val.teams || !val.teams.A || !val.teams.B) {
+      data = {
+        score: { A: 0, B: 0 },
+        teams: {
+          A: { name: 'Lag A', players: [] },
+          B: { name: 'Lag B', players: [] }
+        }
+      };
+      saveData(); // Lagre standard data til Firebase slik at det finnes der
+    } else {
+      data = val;
+    }
+
+    // Oppdater input-feltene og UI
     teamANameInput.value = data.teams.A.name || 'Lag A';
     teamBNameInput.value = data.teams.B.name || 'Lag B';
     updateScoreUI();
@@ -95,6 +111,7 @@ function loadData() {
     renderPlayers(playersBList, data.teams.B.players, 'B');
   });
 }
+
 
 window.changeScore = function(team, delta) {
   data.score[team] += delta;
