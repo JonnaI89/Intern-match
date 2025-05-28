@@ -4,23 +4,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin - Live Scoreboard</title>
+  <title>Admin Kontrollpanel</title>
   <link rel="stylesheet" href="style.css" />
   <script type="module" src="admin.js"></script>
 </head>
 <body>
   <h1>Admin Kontrollpanel</h1>
-  <div class="scoreboard">
-    <div>
-      <h2>Lag A: <span id="scoreA">0</span></h2>
-      <button onclick="updateScore('A', 1)">+1</button>
-      <button onclick="updateScore('A', -1)">-1</button>
-    </div>
-    <div>
-      <h2>Lag B: <span id="scoreB">0</span></h2>
-      <button onclick="updateScore('B', 1)">+1</button>
-      <button onclick="updateScore('B', -1)">-1</button>
-    </div>
+  
+  <div class="team" id="teamA">
+    <h2>Lag A</h2>
+    <label>Lag navn: <input type="text" id="teamANameInput" /></label>
+    <h3>Spillere (max 20):</h3>
+    <ul id="playersAList"></ul>
+    <button id="addPlayerA">Legg til spiller</button>
+  </div>
+  
+  <div class="team" id="teamB">
+    <h2>Lag B</h2>
+    <label>Lag navn: <input type="text" id="teamBNameInput" /></label>
+    <h3>Spillere (max 20):</h3>
+    <ul id="playersBList"></ul>
+    <button id="addPlayerB">Legg til spiller</button>
+  </div>
+
+  <h2>Score</h2>
+  <div>
+    <p>Lag A: <span id="scoreA">0</span> 
+      <button onclick="changeScore('A',1)">+1</button> 
+      <button onclick="changeScore('A',-1)">-1</button>
+    </p>
+    <p>Lag B: <span id="scoreB">0</span> 
+      <button onclick="changeScore('B',1)">+1</button> 
+      <button onclick="changeScore('B',-1)">-1</button>
+    </p>
   </div>
 </body>
 </html>
