@@ -14,7 +14,9 @@ timerEl.style.marginBottom = '1em';
 document.body.insertBefore(timerEl, document.querySelector('.scoreboard'));
 
 const rootRef = ref(db, '/');
+const offsetRef = ref(db, '.info/serverTimeOffset');
 
+let serverTimeOffset = 0;
 let timerData = {
   seconds: 0,
   running: false,
@@ -28,27 +30,21 @@ function formatTime(totalSeconds) {
 }
 
 function updateTimerUI() {
-  timerEl.textContent = `Tid: ${formatTime(timerData.seconds)}`;
-}
-
-// Oppdater timerData.seconds basert på tid som har gått siden sist oppdatering
-function updateTimerFromNow() {
-  if (timerData.running && timerData.lastUpdate) {
-    const now = Date.now();
-    const elapsedSec = Math.floor((now - timerData.lastUpdate) / 1000);
-    if (elapsedSec > 0) {
-      timerData.seconds += elapsedSec;   // teller opp
-      timerData.lastUpdate = now;
-    }
+  const now = Date.now() + serverTimeOffset;
+  let elapsed = 0;
+  if (timerData.running) {
+    elapsed = Math.floor((now - timerData.lastUpdate) / 1000);
   }
-  updateTimerUI();
+  const totalSeconds = timerData.seconds + elapsed;
+  timerEl.textContent = `Tid: ${formatTime(totalSeconds)}`;
 }
 
-// Kjør oppdatering jevnlig (hver 0.5 sekund)
-setInterval(() => {
-  updateTimerFromNow();
-}, 500);
+// Lytt til serverens tidsforskyvning
+onValue(offsetRef, (snapshot) => {
+  serverTimeOffset = snapshot.val() || 0;
+});
 
+// Lytt til endringer i databasen
 onValue(rootRef, (snapshot) => {
   const data = snapshot.val() || {};
   const score = data.score || { A: 0, B: 0 };
@@ -57,7 +53,7 @@ onValue(rootRef, (snapshot) => {
     B: { name: 'Lag B', players: [] }
   };
 
-  // Hent timer-data fra Firebase, med fallback
+  // Timer-data fra Firebase
   timerData = data.timer || { seconds: 0, running: false, lastUpdate: Date.now() };
 
   // Hvis lastUpdate ikke finnes, sett til nå
@@ -87,4 +83,9 @@ onValue(rootRef, (snapshot) => {
 
   updateTimerUI();
 });
+
+// Oppdater timeren hvert 0.5 sekund
+setInterval(() => {
+  updateTimerUI();
+}, 500);
 
