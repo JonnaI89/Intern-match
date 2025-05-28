@@ -169,8 +169,3 @@ document.getElementById('addPlayerB').onclick = () => {
 };
 
 loadData();
-
-});
-
-// Last inn lag og spillere + score
-loadData();
