@@ -106,16 +106,20 @@ function loadData() {
       saveData();
     } else {
       data = val;
+
+      // Sørg for at players alltid er array
+      if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
+      if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
     }
 
     // Oppdater input-feltene og UI
-    teamANameInput.value = (data.teams && data.teams.A && data.teams.A.name) ? data.teams.A.name : 'Lag A';
-    teamBNameInput.value = (data.teams && data.teams.B && data.teams.B.name) ? data.teams.B.name : 'Lag B';
+    teamANameInput.value = data.teams.A.name || 'Lag A';
+    teamBNameInput.value = data.teams.B.name || 'Lag B';
 
     updateScoreUI();
 
-    renderPlayers(playersAList, (data.teams && data.teams.A && data.teams.A.players) || [], 'A');
-    renderPlayers(playersBList, (data.teams && data.teams.B && data.teams.B.players) || [], 'B');
+    renderPlayers(playersAList, data.teams.A.players, 'A');
+    renderPlayers(playersBList, data.teams.B.players, 'B');
 
     // Aktiver input-feltene nå som data er lastet
     teamANameInput.disabled = false;
@@ -127,7 +131,7 @@ function loadData() {
 }
 
 window.changeScore = function(team, delta) {
-  if (!data.score) return; // Sjekk at score finnes
+  if (!data.score) return;
   data.score[team] += delta;
   if (data.score[team] < 0) data.score[team] = 0;
   updateScoreUI();
@@ -154,6 +158,7 @@ teamBNameInput.onchange = () => {
 
 document.getElementById('addPlayerA').onclick = () => {
   if (data.teams && data.teams.A) {
+    if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
     if (data.teams.A.players.length >= 20) {
       alert('Maks 20 spillere per lag');
       return;
@@ -166,6 +171,7 @@ document.getElementById('addPlayerA').onclick = () => {
 
 document.getElementById('addPlayerB').onclick = () => {
   if (data.teams && data.teams.B) {
+    if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
     if (data.teams.B.players.length >= 20) {
       alert('Maks 20 spillere per lag');
       return;
@@ -177,15 +183,14 @@ document.getElementById('addPlayerB').onclick = () => {
 };
 
 // Timer kontroller
-document.getElementById('startTimerBtn').onclick = () => startTimer();
-document.getElementById('stopTimerBtn').onclick = () => stopTimer();
-document.getElementById('resetTimerBtn').onclick = () => resetTimer();
-document.getElementById('setTimerBtn').onclick = () => {
-  const val = parseInt(document.getElementById('setTimerInput').value, 10);
+document.getElementById('startTimerBtn')?.addEventListener('click', () => startTimer());
+document.getElementById('stopTimerBtn')?.addEventListener('click', () => stopTimer());
+document.getElementById('resetTimerBtn')?.addEventListener('click', () => resetTimer());
+document.getElementById('setTimerBtn')?.addEventListener('click', () => {
+  const val = parseInt(document.getElementById('setTimerInput')?.value, 10);
   if (!isNaN(val) && val >= 0) {
     setTimerSeconds(val);
   }
-};
+});
 
 loadData();
-
