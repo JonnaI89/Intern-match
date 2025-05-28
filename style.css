@@ -1,16 +1,26 @@
-
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   padding: 2rem;
 }
+
 .scoreboard {
   display: flex;
-  justify-content: center;
-  gap: 3rem;
+  justify-content: space-around;
+  margin-top: 2rem;
 }
+
+.team {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  width: 45%;
+}
+
+input[type="text"] {
+  margin: 0 0.5rem;
+}
+
 button {
-  font-size: 1.2rem;
-  margin: 0.5rem;
-  padding: 0.6rem 1.2rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
 }
