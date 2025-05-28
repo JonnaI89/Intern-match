@@ -1,4 +1,3 @@
-// admin.js
 import { db, ref, onValue, set } from './firebase.js';
 import { initTimer, startTimer, stopTimer, resetTimer, setTimerSeconds } from './timer.js';
 
@@ -17,7 +16,6 @@ let data = {
   }
 };
 
-// Deaktiver inputs til data er lastet
 teamANameInput.disabled = true;
 teamBNameInput.disabled = true;
 
@@ -31,25 +29,17 @@ function renderPlayers(listEl, players, team) {
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = player.name || '';
-    nameInput.size = 15;
     nameInput.placeholder = 'Spiller navn';
     nameInput.onchange = () => {
       player.name = nameInput.value;
       saveData();
     };
 
-    const goalsSpan = document.createElement('span');
-    goalsSpan.textContent = ` Mål: ${player.goals || 0} `;
-
-    const assistsSpan = document.createElement('span');
-    assistsSpan.textContent = ` Assist: ${player.assists || 0} `;
-
     const goalBtn = document.createElement('button');
     goalBtn.textContent = '+ Mål';
     goalBtn.onclick = () => {
       player.goals = (player.goals || 0) + 1;
       data.score[team]++;
-      updateScoreUI();
       saveData();
       renderPlayers(listEl, players, team);
     };
@@ -71,12 +61,10 @@ function renderPlayers(listEl, players, team) {
     };
 
     li.appendChild(nameInput);
-    li.appendChild(goalsSpan);
-    li.appendChild(assistsSpan);
+    li.appendChild(document.createTextNode(` Mål: ${player.goals || 0}, Assist: ${player.assists || 0} `));
     li.appendChild(goalBtn);
     li.appendChild(assistBtn);
     li.appendChild(removeBtn);
-
     listEl.appendChild(li);
   });
 }
@@ -93,104 +81,65 @@ function saveData() {
 function loadData() {
   onValue(rootRef, (snapshot) => {
     const val = snapshot.val();
-    console.log('Data fra Firebase:', val);
+    data = val || data;
 
-    if (!val || !val.teams || !val.teams.A || !val.teams.B) {
-      data = {
-        score: { A: 0, B: 0 },
-        teams: {
-          A: { name: 'Lag A', players: [] },
-          B: { name: 'Lag B', players: [] }
-        }
-      };
-      saveData();
-    } else {
-      data = val;
+    if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
+    if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
 
-      // Sørg for at players alltid er array
-      if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
-      if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
-    }
-
-    // Oppdater input-feltene og UI
-    teamANameInput.value = data.teams.A.name || 'Lag A';
-    teamBNameInput.value = data.teams.B.name || 'Lag B';
+    teamANameInput.value = data.teams.A.name;
+    teamBNameInput.value = data.teams.B.name;
 
     updateScoreUI();
-
     renderPlayers(playersAList, data.teams.A.players, 'A');
     renderPlayers(playersBList, data.teams.B.players, 'B');
 
-    // Aktiver input-feltene nå som data er lastet
     teamANameInput.disabled = false;
     teamBNameInput.disabled = false;
 
-    // Init timer når data er lastet
     initTimer();
   });
 }
 
-window.changeScore = function(team, delta) {
-  if (!data.score) return;
-  data.score[team] += delta;
-  if (data.score[team] < 0) data.score[team] = 0;
+window.changeScore = function (team, delta) {
+  data.score[team] = Math.max(0, data.score[team] + delta);
   updateScoreUI();
   saveData();
 };
 
 teamANameInput.onchange = () => {
-  if (data.teams && data.teams.A) {
-    data.teams.A.name = teamANameInput.value;
-    saveData();
-  } else {
-    console.warn('Teams data ikke klar for team A');
-  }
+  data.teams.A.name = teamANameInput.value;
+  saveData();
 };
 
 teamBNameInput.onchange = () => {
-  if (data.teams && data.teams.B) {
-    data.teams.B.name = teamBNameInput.value;
-    saveData();
-  } else {
-    console.warn('Teams data ikke klar for team B');
-  }
+  data.teams.B.name = teamBNameInput.value;
+  saveData();
 };
 
 document.getElementById('addPlayerA').onclick = () => {
-  if (data.teams && data.teams.A) {
-    if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
-    if (data.teams.A.players.length >= 20) {
-      alert('Maks 20 spillere per lag');
-      return;
-    }
-    data.teams.A.players.push({ name: '', goals: 0, assists: 0 });
-    saveData();
-    renderPlayers(playersAList, data.teams.A.players, 'A');
-  }
+  if (data.teams.A.players.length >= 20) return alert('Maks 20 spillere');
+  data.teams.A.players.push({ name: '', goals: 0, assists: 0 });
+  saveData();
+  renderPlayers(playersAList, data.teams.A.players, 'A');
 };
 
 document.getElementById('addPlayerB').onclick = () => {
-  if (data.teams && data.teams.B) {
-    if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
-    if (data.teams.B.players.length >= 20) {
-      alert('Maks 20 spillere per lag');
-      return;
-    }
-    data.teams.B.players.push({ name: '', goals: 0, assists: 0 });
-    saveData();
-    renderPlayers(playersBList, data.teams.B.players, 'B');
-  }
+  if (data.teams.B.players.length >= 20) return alert('Maks 20 spillere');
+  data.teams.B.players.push({ name: '', goals: 0, assists: 0 });
+  saveData();
+  renderPlayers(playersBList, data.teams.B.players, 'B');
 };
 
-// Timer kontroller
-document.getElementById('startTimerBtn')?.addEventListener('click', () => startTimer());
-document.getElementById('stopTimerBtn')?.addEventListener('click', () => stopTimer());
-document.getElementById('resetTimerBtn')?.addEventListener('click', () => resetTimer());
-document.getElementById('setTimerBtn')?.addEventListener('click', () => {
-  const val = parseInt(document.getElementById('setTimerInput')?.value, 10);
+// Timerkontroller
+document.getElementById('startTimerBtn').addEventListener('click', startTimer);
+document.getElementById('stopTimerBtn').addEventListener('click', stopTimer);
+document.getElementById('resetTimerBtn').addEventListener('click', resetTimer);
+document.getElementById('setTimerBtn').addEventListener('click', () => {
+  const val = parseInt(document.getElementById('setTimerInput').value);
   if (!isNaN(val) && val >= 0) {
     setTimerSeconds(val);
   }
 });
 
 loadData();
+
