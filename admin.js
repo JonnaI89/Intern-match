@@ -122,12 +122,13 @@ function loadData() {
 }
 
 function changeScore(team, delta) {
-  if (!data.score) return;
-  data.score[team] += delta;
-  if (data.score[team] < 0) data.score[team] = 0;
-  updateScoreUI();
-  saveData();
+  const scoreElement = document.getElementById(`score${team}`);
+  let score = parseInt(scoreElement.textContent, 10);
+  score += delta;
+  if (score < 0) score = 0;
+  scoreElement.textContent = score;
 }
+
 
 // Navn-endringer
 teamANameInput.onchange = () => {
@@ -161,10 +162,11 @@ document.getElementById('addPlayerB').onclick = () => {
 };
 
 // Poeng-knapper
-document.getElementById('scoreAPlus')?.addEventListener('click', () => changeScore('A', 1));
-document.getElementById('scoreAMinus')?.addEventListener('click', () => changeScore('A', -1));
-document.getElementById('scoreBPlus')?.addEventListener('click', () => changeScore('B', 1));
-document.getElementById('scoreBMinus')?.addEventListener('click', () => changeScore('B', -1));
+document.getElementById('scoreAPlus').addEventListener('click', () => changeScore('A', 1));
+document.getElementById('scoreAMinus').addEventListener('click', () => changeScore('A', -1));
+document.getElementById('scoreBPlus').addEventListener('click', () => changeScore('B', 1));
+document.getElementById('scoreBMinus').addEventListener('click', () => changeScore('B', -1));
+
 
 // Timer-knapper
 document.getElementById('startTimerBtn')?.addEventListener('click', () => startTimer());
