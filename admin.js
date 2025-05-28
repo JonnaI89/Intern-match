@@ -1,3 +1,4 @@
+// admin.js
 import { db, ref, onValue, set } from './firebase.js';
 
 const teamANameInput = document.getElementById('teamANameInput');
@@ -21,23 +22,23 @@ function renderPlayers(listEl, players, team) {
   listEl.innerHTML = '';
   players.forEach((player, i) => {
     const li = document.createElement('li');
-
+    
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = player.name || '';
-    nameInput.placeholder = 'Spiller navn';
     nameInput.size = 15;
+    nameInput.placeholder = 'Spiller navn';
     nameInput.onchange = () => {
       player.name = nameInput.value;
       saveData();
     };
-
+    
     const goalsSpan = document.createElement('span');
     goalsSpan.textContent = ` Mål: ${player.goals || 0} `;
-
+    
     const assistsSpan = document.createElement('span');
     assistsSpan.textContent = ` Assist: ${player.assists || 0} `;
-
+    
     const goalBtn = document.createElement('button');
     goalBtn.textContent = '+ Mål';
     goalBtn.onclick = () => {
@@ -47,7 +48,7 @@ function renderPlayers(listEl, players, team) {
       saveData();
       renderPlayers(listEl, players, team);
     };
-
+    
     const assistBtn = document.createElement('button');
     assistBtn.textContent = '+ Assist';
     assistBtn.onclick = () => {
@@ -55,7 +56,7 @@ function renderPlayers(listEl, players, team) {
       saveData();
       renderPlayers(listEl, players, team);
     };
-
+    
     const removeBtn = document.createElement('button');
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => {
@@ -63,14 +64,14 @@ function renderPlayers(listEl, players, team) {
       saveData();
       renderPlayers(listEl, players, team);
     };
-
+    
     li.appendChild(nameInput);
     li.appendChild(goalsSpan);
     li.appendChild(assistsSpan);
     li.appendChild(goalBtn);
     li.appendChild(assistBtn);
     li.appendChild(removeBtn);
-
+    
     listEl.appendChild(li);
   });
 }
@@ -99,6 +100,9 @@ function loadData() {
       saveData();
     } else {
       data = val;
+      // Sikre at players-array alltid eksisterer
+      data.teams.A.players = Array.isArray(data.teams.A.players) ? data.teams.A.players : [];
+      data.teams.B.players = Array.isArray(data.teams.B.players) ? data.teams.B.players : [];
     }
 
     teamANameInput.value = data.teams.A.name || 'Lag A';
@@ -117,16 +121,24 @@ window.changeScore = function(team, delta) {
 };
 
 teamANameInput.onchange = () => {
+  if (!data.teams) data.teams = {};
+  if (!data.teams.A) data.teams.A = { players: [] };
   data.teams.A.name = teamANameInput.value;
   saveData();
 };
 
 teamBNameInput.onchange = () => {
+  if (!data.teams) data.teams = {};
+  if (!data.teams.B) data.teams.B = { players: [] };
   data.teams.B.name = teamBNameInput.value;
   saveData();
 };
 
 document.getElementById('addPlayerA').onclick = () => {
+  if (!data.teams) data.teams = {};
+  if (!data.teams.A) data.teams.A = { players: [] };
+  if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
+
   if (data.teams.A.players.length >= 20) {
     alert('Maks 20 spillere per lag');
     return;
@@ -137,6 +149,10 @@ document.getElementById('addPlayerA').onclick = () => {
 };
 
 document.getElementById('addPlayerB').onclick = () => {
+  if (!data.teams) data.teams = {};
+  if (!data.teams.B) data.teams.B = { players: [] };
+  if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
+
   if (data.teams.B.players.length >= 20) {
     alert('Maks 20 spillere per lag');
     return;
@@ -147,3 +163,4 @@ document.getElementById('addPlayerB').onclick = () => {
 };
 
 loadData();
+
