@@ -1,5 +1,5 @@
 // admin.js
-import { db, ref, onValue, set } from './firebase.js';
+import { db, ref, onValue, set, update } from './firebase.js';
 
 const teamANameInput = document.getElementById('teamANameInput');
 const teamBNameInput = document.getElementById('teamBNameInput');
@@ -100,11 +100,17 @@ function loadData() {
       saveData();
     } else {
       data = val;
-      // Sikre at players-array alltid eksisterer
-      data.teams.A.players = Array.isArray(data.teams.A.players) ? data.teams.A.players : [];
-      data.teams.B.players = Array.isArray(data.teams.B.players) ? data.teams.B.players : [];
+
+      // Sikre at players alltid er array
+      if (!Array.isArray(data.teams.A.players)) {
+        data.teams.A.players = [];
+      }
+      if (!Array.isArray(data.teams.B.players)) {
+        data.teams.B.players = [];
+      }
     }
 
+    // Oppdater UI
     teamANameInput.value = data.teams.A.name || 'Lag A';
     teamBNameInput.value = data.teams.B.name || 'Lag B';
     updateScoreUI();
@@ -122,14 +128,14 @@ window.changeScore = function(team, delta) {
 
 teamANameInput.onchange = () => {
   if (!data.teams) data.teams = {};
-  if (!data.teams.A) data.teams.A = { players: [] };
+  if (!data.teams.A) data.teams.A = {};
   data.teams.A.name = teamANameInput.value;
   saveData();
 };
 
 teamBNameInput.onchange = () => {
   if (!data.teams) data.teams = {};
-  if (!data.teams.B) data.teams.B = { players: [] };
+  if (!data.teams.B) data.teams.B = {};
   data.teams.B.name = teamBNameInput.value;
   saveData();
 };
@@ -163,4 +169,3 @@ document.getElementById('addPlayerB').onclick = () => {
 };
 
 loadData();
-
