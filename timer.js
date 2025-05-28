@@ -1,14 +1,12 @@
-// timer.js
-
 let timerInterval = null;
 let remainingSeconds = 0;
 
 function updateTimerDisplay() {
-  const timerDisplay = document.getElementById('timerDisplay');
-  if (timerDisplay) {
-    const minutes = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
-    const seconds = String(remainingSeconds % 60).padStart(2, '0');
-    timerDisplay.textContent = `${minutes}:${seconds}`;
+  const el = document.getElementById('timerDisplay');
+  if (el) {
+    const m = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
+    const s = String(remainingSeconds % 60).padStart(2, '0');
+    el.textContent = `${m}:${s}`;
   }
 }
 
@@ -36,6 +34,11 @@ export function stopTimer() {
 export function resetTimer() {
   stopTimer();
   remainingSeconds = 0;
+  updateTimerDisplay();
+}
+
+export function setTimerSeconds(seconds) {
+  remainingSeconds = seconds;
   updateTimerDisplay();
 }
 
