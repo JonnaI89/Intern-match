@@ -8,7 +8,11 @@ function updateTimerDisplay() {
   if (timerDisplay) {
     const minutes = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
     const seconds = String(remainingSeconds % 60).padStart(2, '0');
-    timerDisplay.textContent = `${minutes}:${seconds}`;
+    const formattedTime = `${minutes}:${seconds}`;
+    timerDisplay.textContent = formattedTime;
+    
+    // Lagre tiden i localStorage slik at visningssiden kan hente den
+    localStorage.setItem('sharedTimer', formattedTime);
   }
 }
 
