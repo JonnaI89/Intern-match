@@ -1,91 +1,27 @@
-import { db, ref, onValue } from './firebase.js';
-
-const scoreAEl = document.getElementById('scoreA');
-const scoreBEl = document.getElementById('scoreB');
-const teamANameEl = document.getElementById('teamAName');
-const teamBNameEl = document.getElementById('teamBName');
-const playersAEl = document.getElementById('playersA');
-const playersBEl = document.getElementById('playersB');
-
-// Opprett og legg til timer-element øverst på siden
-const timerEl = document.createElement('div');
-timerEl.style.fontSize = '1.5em';
-timerEl.style.marginBottom = '1em';
-document.body.insertBefore(timerEl, document.querySelector('.scoreboard'));
-
-const rootRef = ref(db, '/');
-const offsetRef = ref(db, '.info/serverTimeOffset');
-
-let serverTimeOffset = 0;
-let timerData = {
-  seconds: 0,
-  running: false,
-  lastUpdate: 0
-};
-
-function formatTime(totalSeconds) {
-  const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-  const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-  return `${minutes}:${seconds}`;
-}
-
-function updateTimerUI() {
-  const now = Date.now() + serverTimeOffset;
-  let elapsed = 0;
-  if (timerData.running) {
-    elapsed = Math.floor((now - timerData.lastUpdate) / 1000);
-  }
-  const totalSeconds = timerData.seconds + elapsed;
-  timerEl.textContent = `Tid: ${formatTime(totalSeconds)}`;
-}
-
-// Lytt til serverens tidsforskyvning
-onValue(offsetRef, (snapshot) => {
-  serverTimeOffset = snapshot.val() || 0;
-});
-
-// Lytt til endringer i databasen
-onValue(rootRef, (snapshot) => {
-  const data = snapshot.val() || {};
-  const score = data.score || { A: 0, B: 0 };
-  const teams = data.teams || {
-    A: { name: 'Lag A', players: [] },
-    B: { name: 'Lag B', players: [] }
-  };
-
-  // Timer-data fra Firebase
-  timerData = data.timer || { seconds: 0, running: false, lastUpdate: Date.now() };
-
-  // Hvis lastUpdate ikke finnes, sett til nå
-  if (!timerData.lastUpdate) {
-    timerData.lastUpdate = Date.now();
-  }
-
-  scoreAEl.textContent = score.A;
-  scoreBEl.textContent = score.B;
-  teamANameEl.textContent = teams.A.name || 'Lag A';
-  teamBNameEl.textContent = teams.B.name || 'Lag B';
-
-  playersAEl.innerHTML = '';
-  playersBEl.innerHTML = '';
-
-  for (const player of teams.A.players || []) {
-    const li = document.createElement('li');
-    li.textContent = `${player.name} - Mål: ${player.goals || 0}, Assist: ${player.assists || 0}`;
-    playersAEl.appendChild(li);
-  }
-
-  for (const player of teams.B.players || []) {
-    const li = document.createElement('li');
-    li.textContent = `${player.name} - Mål: ${player.goals || 0}, Assist: ${player.assists || 0}`;
-    playersBEl.appendChild(li);
-  }
-
-  updateTimerUI();
-});
-
-// Oppdater timeren hvert 0.5 sekund
-setInterval(() => {
-  updateTimerUI();
-}, 500);
-
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Scoreboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="index.js"></script>
+</head>
+<body>
+  <h1>Live Scoreboard</h1>
+  <div class="scoreboard">
+    <div>
+      <h2 id="teamAName">Lag A</h2>
+      <p>Score: <span id="scoreA">0</span></p>
+      <h3>Spillere:</h3>
+      <ul id="playersA"></ul>
+    </div>
+    <div>
+      <h2 id="teamBName">Lag B</h2>
+      <p>Score: <span id="scoreB">0</span></p>
+      <h3>Spillere:</h3>
+      <ul id="playersB"></ul>
+    </div>
+  </div>
+</body>
+</html>
