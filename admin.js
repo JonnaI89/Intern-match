@@ -1,3 +1,4 @@
+// admin.js
 import { db, ref, onValue, set, update } from './firebase.js';
 
 const teamANameInput = document.getElementById('teamANameInput');
@@ -22,10 +23,9 @@ function renderPlayers(listEl, players, team) {
   players.forEach((player, i) => {
     const li = document.createElement('li');
     
-    // Spiller navn input
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
-    nameInput.value = player.name;
+    nameInput.value = player.name || '';
     nameInput.size = 15;
     nameInput.placeholder = 'Spiller navn';
     nameInput.onchange = () => {
@@ -33,15 +33,12 @@ function renderPlayers(listEl, players, team) {
       saveData();
     };
     
-    // Mål teller
     const goalsSpan = document.createElement('span');
     goalsSpan.textContent = ` Mål: ${player.goals || 0} `;
     
-    // Assist teller
     const assistsSpan = document.createElement('span');
-    assistsSpan.textContent = `Assist: ${player.assists || 0} `;
+    assistsSpan.textContent = ` Assist: ${player.assists || 0} `;
     
-    // +mål knapp
     const goalBtn = document.createElement('button');
     goalBtn.textContent = '+ Mål';
     goalBtn.onclick = () => {
@@ -49,18 +46,17 @@ function renderPlayers(listEl, players, team) {
       data.score[team]++;
       updateScoreUI();
       saveData();
+      renderPlayers(listEl, players, team);
     };
     
-    // +assist knapp
     const assistBtn = document.createElement('button');
     assistBtn.textContent = '+ Assist';
     assistBtn.onclick = () => {
       player.assists = (player.assists || 0) + 1;
-      updateScoreUI();
       saveData();
+      renderPlayers(listEl, players, team);
     };
     
-    // Fjern spiller knapp
     const removeBtn = document.createElement('button');
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => {
