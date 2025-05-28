@@ -1,150 +1,155 @@
+// admin.js
 import { db, ref, onValue, set, update } from './firebase.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const teamANameInput = document.getElementById('teamANameInput');
-  const teamBNameInput = document.getElementById('teamBNameInput');
-  const playersAList = document.getElementById('playersAList');
-  const playersBList = document.getElementById('playersBList');
-  const scoreAEl = document.getElementById('scoreA');
-  const scoreBEl = document.getElementById('scoreB');
+const teamANameInput = document.getElementById('teamANameInput');
+const teamBNameInput = document.getElementById('teamBNameInput');
+const playersAList = document.getElementById('playersAList');
+const playersBList = document.getElementById('playersBList');
+const scoreAEl = document.getElementById('scoreA');
+const scoreBEl = document.getElementById('scoreB');
 
-  let data = {
-    score: { A: 0, B: 0 },
-    teams: {
-      A: { name: 'Lag A', players: [] },
-      B: { name: 'Lag B', players: [] }
-    }
-  };
-
-  const rootRef = ref(db, '/');
-
-  function renderPlayers(listEl, players, team) {
-    listEl.innerHTML = '';
-    players.forEach((player, i) => {
-      const li = document.createElement('li');
-
-      const nameInput = document.createElement('input');
-      nameInput.type = 'text';
-      nameInput.value = player.name || '';
-      nameInput.size = 15;
-      nameInput.placeholder = 'Spiller navn';
-      nameInput.onchange = () => {
-        player.name = nameInput.value;
-        saveData();
-      };
-
-      const goalsSpan = document.createElement('span');
-      goalsSpan.textContent = ` Mål: ${player.goals || 0} `;
-
-      const assistsSpan = document.createElement('span');
-      assistsSpan.textContent = ` Assist: ${player.assists || 0} `;
-
-      const goalBtn = document.createElement('button');
-      goalBtn.textContent = '+ Mål';
-      goalBtn.onclick = () => {
-        player.goals = (player.goals || 0) + 1;
-        data.score[team]++;
-        updateScoreUI();
-        saveData();
-        renderPlayers(listEl, players, team);
-      };
-
-      const assistBtn = document.createElement('button');
-      assistBtn.textContent = '+ Assist';
-      assistBtn.onclick = () => {
-        player.assists = (player.assists || 0) + 1;
-        saveData();
-        renderPlayers(listEl, players, team);
-      };
-
-      const removeBtn = document.createElement('button');
-      removeBtn.textContent = 'X';
-      removeBtn.onclick = () => {
-        players.splice(i, 1);
-        saveData();
-        renderPlayers(listEl, players, team);
-      };
-
-      li.appendChild(nameInput);
-      li.appendChild(goalsSpan);
-      li.appendChild(assistsSpan);
-      li.appendChild(goalBtn);
-      li.appendChild(assistBtn);
-      li.appendChild(removeBtn);
-
-      listEl.appendChild(li);
-    });
+let data = {
+  score: { A: 0, B: 0 },
+  teams: {
+    A: { name: 'Lag A', players: [] },
+    B: { name: 'Lag B', players: [] }
   }
+};
 
-  function updateScoreUI() {
-    scoreAEl.textContent = data.score.A;
-    scoreBEl.textContent = data.score.B;
-  }
+// Deaktiver inputs til data er lastet
+teamANameInput.disabled = true;
+teamBNameInput.disabled = true;
 
-  function saveData() {
-    set(rootRef, data);
-  }
+const rootRef = ref(db, '/');
 
-  function loadData() {
-    onValue(rootRef, (snapshot) => {
-      const val = snapshot.val();
-
-      if (!val || !val.teams || !val.teams.A || !val.teams.B) {
-        data = {
-          score: { A: 0, B: 0 },
-          teams: {
-            A: { name: 'Lag A', players: [] },
-            B: { name: 'Lag B', players: [] }
-          }
-        };
-        saveData();
-      } else {
-        data = val;
-
-        // Sikre at players alltid er array
-        if (!Array.isArray(data.teams.A.players)) {
-          data.teams.A.players = [];
-        }
-        if (!Array.isArray(data.teams.B.players)) {
-          data.teams.B.players = [];
-        }
-      }
-
-      // Oppdater UI
-      teamANameInput.value = data.teams.A.name || 'Lag A';
-      teamBNameInput.value = data.teams.B.name || 'Lag B';
+function renderPlayers(listEl, players, team) {
+  listEl.innerHTML = '';
+  players.forEach((player, i) => {
+    const li = document.createElement('li');
+    
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.value = player.name || '';
+    nameInput.size = 15;
+    nameInput.placeholder = 'Spiller navn';
+    nameInput.onchange = () => {
+      player.name = nameInput.value;
+      saveData();
+    };
+    
+    const goalsSpan = document.createElement('span');
+    goalsSpan.textContent = ` Mål: ${player.goals || 0} `;
+    
+    const assistsSpan = document.createElement('span');
+    assistsSpan.textContent = ` Assist: ${player.assists || 0} `;
+    
+    const goalBtn = document.createElement('button');
+    goalBtn.textContent = '+ Mål';
+    goalBtn.onclick = () => {
+      player.goals = (player.goals || 0) + 1;
+      data.score[team]++;
       updateScoreUI();
-      renderPlayers(playersAList, data.teams.A.players, 'A');
-      renderPlayers(playersBList, data.teams.B.players, 'B');
-    });
-  }
+      saveData();
+      renderPlayers(listEl, players, team);
+    };
+    
+    const assistBtn = document.createElement('button');
+    assistBtn.textContent = '+ Assist';
+    assistBtn.onclick = () => {
+      player.assists = (player.assists || 0) + 1;
+      saveData();
+      renderPlayers(listEl, players, team);
+    };
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'X';
+    removeBtn.onclick = () => {
+      players.splice(i, 1);
+      saveData();
+      renderPlayers(listEl, players, team);
+    };
+    
+    li.appendChild(nameInput);
+    li.appendChild(goalsSpan);
+    li.appendChild(assistsSpan);
+    li.appendChild(goalBtn);
+    li.appendChild(assistBtn);
+    li.appendChild(removeBtn);
+    
+    listEl.appendChild(li);
+  });
+}
 
-  window.changeScore = function(team, delta) {
-    data.score[team] += delta;
-    if (data.score[team] < 0) data.score[team] = 0;
+function updateScoreUI() {
+  scoreAEl.textContent = data.score.A;
+  scoreBEl.textContent = data.score.B;
+}
+
+function saveData() {
+  set(rootRef, data);
+}
+
+function loadData() {
+  onValue(rootRef, (snapshot) => {
+    const val = snapshot.val();
+    console.log('Data fra Firebase:', val);
+
+    if (!val || !val.teams || !val.teams.A || !val.teams.B) {
+      data = {
+        score: { A: 0, B: 0 },
+        teams: {
+          A: { name: 'Lag A', players: [] },
+          B: { name: 'Lag B', players: [] }
+        }
+      };
+      saveData();
+    } else {
+      data = val;
+    }
+
+    // Oppdater input-feltene og UI
+    teamANameInput.value = (data.teams && data.teams.A && data.teams.A.name) ? data.teams.A.name : 'Lag A';
+    teamBNameInput.value = (data.teams && data.teams.B && data.teams.B.name) ? data.teams.B.name : 'Lag B';
+
     updateScoreUI();
-    saveData();
-  };
 
-  teamANameInput.onchange = () => {
-    if (!data.teams) data.teams = {};
-    if (!data.teams.A) data.teams.A = {};
+    renderPlayers(playersAList, (data.teams && data.teams.A && data.teams.A.players) || [], 'A');
+    renderPlayers(playersBList, (data.teams && data.teams.B && data.teams.B.players) || [], 'B');
+
+    // Aktiver input-feltene nå som data er lastet
+    teamANameInput.disabled = false;
+    teamBNameInput.disabled = false;
+  });
+}
+
+window.changeScore = function(team, delta) {
+  if (!data.score) return; // Sjekk at score finnes
+  data.score[team] += delta;
+  if (data.score[team] < 0) data.score[team] = 0;
+  updateScoreUI();
+  saveData();
+};
+
+teamANameInput.onchange = () => {
+  if (data.teams && data.teams.A) {
     data.teams.A.name = teamANameInput.value;
     saveData();
-  };
+  } else {
+    console.warn('Teams data ikke klar for team A');
+  }
+};
 
-  teamBNameInput.onchange = () => {
-    if (!data.teams) data.teams = {};
-    if (!data.teams.B) data.teams.B = {};
+teamBNameInput.onchange = () => {
+  if (data.teams && data.teams.B) {
     data.teams.B.name = teamBNameInput.value;
     saveData();
-  };
+  } else {
+    console.warn('Teams data ikke klar for team B');
+  }
+};
 
-  document.getElementById('addPlayerA').onclick = () => {
-    if (!data.teams) data.teams = {};
-    if (!data.teams.A) data.teams.A = { players: [] };
-    if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
-
+document.getElementById('addPlayerA').onclick = () => {
+  if (data.teams && data.teams.A) {
     if (data.teams.A.players.length >= 20) {
       alert('Maks 20 spillere per lag');
       return;
@@ -152,13 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
     data.teams.A.players.push({ name: '', goals: 0, assists: 0 });
     saveData();
     renderPlayers(playersAList, data.teams.A.players, 'A');
-  };
+  }
+};
 
-  document.getElementById('addPlayerB').onclick = () => {
-    if (!data.teams) data.teams = {};
-    if (!data.teams.B) data.teams.B = { players: [] };
-    if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
-
+document.getElementById('addPlayerB').onclick = () => {
+  if (data.teams && data.teams.B) {
     if (data.teams.B.players.length >= 20) {
       alert('Maks 20 spillere per lag');
       return;
@@ -166,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     data.teams.B.players.push({ name: '', goals: 0, assists: 0 });
     saveData();
     renderPlayers(playersBList, data.teams.B.players, 'B');
-  };
+  }
+};
 
-  loadData();
-});
+loadData();
