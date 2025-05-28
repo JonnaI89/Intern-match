@@ -142,4 +142,20 @@ document.getElementById('setTimerBtn').addEventListener('click', () => {
 });
 
 loadData();
+// Koble til poeng-knapper
+document.getElementById('scoreAPlus')?.addEventListener('click', () => {
+  changeScore('A', 1);
+});
+
+document.getElementById('scoreAMinus')?.addEventListener('click', () => {
+  changeScore('A', -1);
+});
+
+document.getElementById('scoreBPlus')?.addEventListener('click', () => {
+  changeScore('B', 1);
+});
+
+document.getElementById('scoreBMinus')?.addEventListener('click', () => {
+  changeScore('B', -1);
+});
 
