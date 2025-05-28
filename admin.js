@@ -1,6 +1,6 @@
 // admin.js
 import { db, ref, onValue, set } from './firebase.js';
-import { initTimer, startTimer, stopTimer, resetTimer, setTimerSeconds } from './timer.js';
+import { initTimer, startTimer, stopTimer, resetTimer, setTimerSeconds, registerTimerUpdateCallback } from './timer.js';
 
 // HTML-elementer
 const teamANameInput = document.getElementById('teamANameInput');
@@ -168,6 +168,28 @@ document.getElementById('scoreBPlus').addEventListener('click', () => changeScor
 document.getElementById('scoreBMinus').addEventListener('click', () => changeScore('B', -1));
 
 
+// Funksjon for å skrive timerstatus til Firebase
+function updateTimerInFirebase(seconds, running, lastUpdate) {
+  // Les eksisterende data først for å ikke overskrive score og teams
+  onValue(rootRef, (snapshot) => {
+    const currentData = snapshot.val() || {};
+    const newData = {
+      ...currentData,
+      timer: {
+        seconds,
+        running,
+        lastUpdate
+      }
+    };
+    set(rootRef, newData);
+  }, { onlyOnce: true });
+}
+
+// Registrer callback til timeren
+registerTimerUpdateCallback(updateTimerInFirebase);
+
+// Resten av admin.js som før, knyttet til start/stop/reset/setTimerSeconds som kaller timer.js-funksjoner
+
 // Timer-knapper
 document.getElementById('startTimerBtn')?.addEventListener('click', () => startTimer());
 document.getElementById('stopTimerBtn')?.addEventListener('click', () => stopTimer());
@@ -178,5 +200,6 @@ document.getElementById('setTimerBtn')?.addEventListener('click', () => {
     setTimerSeconds(val);
   }
 });
+
 
 loadData();
