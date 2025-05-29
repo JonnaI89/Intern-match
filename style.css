@@ -21,7 +21,7 @@ h1 {
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  gap: 2em;
+  gap: 0.7em;         /* Reduced space between teams */
   flex-wrap: wrap;
   margin-bottom: 1em;
   width: 100%;
