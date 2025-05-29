@@ -7,6 +7,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center; /* Center everything horizontally */
+  justify-content: flex-start;
 }
 
 h1 {
@@ -19,9 +20,12 @@ h1 {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 2em; /* More space between teams */
+  align-items: flex-start;
+  gap: 2em;
   flex-wrap: wrap;
   margin-bottom: 1em;
+  width: 100%;
+  max-width: 800px;
 }
 
 .team-panel {
@@ -248,17 +252,17 @@ button:hover {
 }
 
 .players-box {
-  width: 250px;         /* Make the box wider */
-  max-width: 90vw;
-  min-height: 80px;
-  font-size: 1em;
+  width: 320px;
+  max-width: 95vw;
+  min-height: 100px;
+  font-size: 1.1em;
   margin: 0.7em auto 1em auto;
-  padding: 0.7em 1em;
+  padding: 1em 1.2em;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
   overflow-y: auto;
-  max-height: 220px;
+  max-height: 260px;
 }
 
 .team-column {
