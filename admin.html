@@ -9,6 +9,17 @@
 </head>
 <body>
   <h1>INTERN MATCH ADMIN</h1>
+  <div class="period-box">
+    Periode: <span id="periodDisplay">1</span>
+    <button id="periodMinus">-</button>
+    <button id="periodPlus">+</button>
+  </div>
+  <div id="timerContainer">
+    <div id="timerDisplay">00:00</div>
+    <button id="timerStart">Start</button>
+    <button id="timerPause">Pause</button>
+    <button id="timerReset">Nullstill</button>
+  </div>
   <div class="main-layout">
     <div class="team-column">
       <div class="team-panel">
@@ -63,11 +74,6 @@
         <button id="addPlayerB">Legg til spiller</button>
       </div>
     </div>
-  </div>
-  <div>
-    <span>Periode: <span id="periodDisplay">1</span></span>
-    <button id="periodMinus">-</button>
-    <button id="periodPlus">+</button>
   </div>
 </body>
 </html>
