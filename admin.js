@@ -161,7 +161,7 @@ function changeScore(team, delta) {
 
 // Timer functions
 let timerInterval = null;
-let timer = { running: false, seconds: 0 };
+let timer = { running: false, seconds: 0, limit: null };
 
 function formatTime(seconds) {
   const m = String(Math.floor(seconds / 60)).padStart(2, '0');
@@ -185,6 +185,9 @@ function startTimer() {
     timer.seconds++;
     updateTimerUI();
     saveTimer();
+    if (timer.limit !== null && timer.seconds >= timer.limit) {
+      pauseTimer();
+    }
   }, 1000);
 }
 
@@ -201,9 +204,14 @@ function resetTimer() {
   saveTimer();
 }
 
-timerStart.onclick = () => startTimer();
-timerPause.onclick = () => pauseTimer();
-timerReset.onclick = () => resetTimer();
+// Set timer limit in minutes
+timerSetBtn.onclick = () => {
+  const mins = parseInt(timerMinutesInput.value, 10) || 0;
+  timer.limit = mins * 60;
+  timer.seconds = 0;
+  updateTimerUI();
+  saveTimer();
+};
 
 periodMinus.onclick = () => {
   let period = parseInt(periodDisplay.textContent, 10) || 1;
@@ -304,12 +312,3 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   updateScoreUI();
   renderLiveEvents();
 });
-
-timerSetBtn.onclick = () => {
-  const mins = parseInt(timerMinutesInput.value, 10) || 0;
-  timer.seconds = mins * 60;
-  updateTimerUI();
-  saveTimer();
-};
-
-loadData();
