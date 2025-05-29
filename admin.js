@@ -48,6 +48,15 @@ function renderPlayers(listEl, players, team) {
       renderPlayers(listEl, players, team);
     };
 
+    // NEW: Minus goal button
+    const goalMinusBtn = document.createElement('button');
+    goalMinusBtn.textContent = '− Mål';
+    goalMinusBtn.onclick = () => {
+      player.goals = Math.max(0, (player.goals || 0) - 1);
+      saveData();
+      renderPlayers(listEl, players, team);
+    };
+
     const assistBtn = document.createElement('button');
     assistBtn.textContent = '+ Assist';
     assistBtn.onclick = () => {
@@ -70,6 +79,7 @@ function renderPlayers(listEl, players, team) {
     statsDiv.className = 'player-controls';
     statsDiv.appendChild(goalsSpan);
     statsDiv.appendChild(goalBtn);
+    statsDiv.appendChild(goalMinusBtn); // Add minus button here
     statsDiv.appendChild(assistsSpan);
     statsDiv.appendChild(assistBtn);
     statsDiv.appendChild(removeBtn);
