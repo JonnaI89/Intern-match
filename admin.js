@@ -122,11 +122,10 @@ function loadData() {
 }
 
 function changeScore(team, delta) {
-  const scoreElement = document.getElementById(`score${team}`);
-  let score = parseInt(scoreElement.textContent, 10);
-  score += delta;
-  if (score < 0) score = 0;
-  scoreElement.textContent = score;
+  data.score[team] += delta;
+  if (data.score[team] < 0) data.score[team] = 0;
+  updateScoreUI();
+  saveData();
 }
 
 
