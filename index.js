@@ -11,13 +11,13 @@ const liveEvents = document.getElementById('liveEvents');
 const periodView = document.getElementById('periodView');
 const timerDisplay = document.getElementById('timerDisplay');
 
-const rootRef = ref(db, '/');
-
 function formatTime(seconds) {
   const m = String(Math.floor(seconds / 60)).padStart(2, '0');
   const s = String(seconds % 60).padStart(2, '0');
   return `${m}:${s}`;
 }
+
+const rootRef = ref(db, '/');
 
 onValue(rootRef, (snapshot) => {
   const data = snapshot.val();
@@ -28,11 +28,9 @@ onValue(rootRef, (snapshot) => {
   scoreA.textContent = data.score?.A ?? 0;
   scoreB.textContent = data.score?.B ?? 0;
 
-  // Players
   playersA.innerHTML = (data.teams?.A?.players || []).map(p => `<li>${p.name || ''}</li>`).join('');
   playersB.innerHTML = (data.teams?.B?.players || []).map(p => `<li>${p.name || ''}</li>`).join('');
 
-  // Live events
   if (data.liveEvents) {
     liveEvents.innerHTML = data.liveEvents.map(ev => `<div>${ev}</div>`).join('');
   }
