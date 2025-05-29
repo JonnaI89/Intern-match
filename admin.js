@@ -223,6 +223,8 @@ timerStart.onclick = () => startTimer();
 timerPause.onclick = () => pauseTimer();
 timerReset.onclick = () => resetTimer();
 
+let lastRunningState = null;
+
 onValue(ref(db, '/'), (snapshot) => {
   const dbData = snapshot.val();
   if (!dbData) return;
@@ -231,11 +233,15 @@ onValue(ref(db, '/'), (snapshot) => {
     timer.secondsLeft = dbData.timer.secondsLeft ?? timer.secondsLeft;
     timer.originalLimit = dbData.timer.originalLimit ?? timer.originalLimit;
     updateTimerUI();
-    // Sync running state
-    if (dbData.timer.running && !timerInterval) {
-      startTimer();
-    } else if (!dbData.timer.running && timerInterval) {
-      pauseTimer();
+
+    // Only start/stop timer if running state changed
+    if (dbData.timer.running !== lastRunningState) {
+      lastRunningState = dbData.timer.running;
+      if (dbData.timer.running) {
+        startTimer();
+      } else {
+        pauseTimer();
+      }
     }
   }
 });
@@ -315,3 +321,9 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   updateScoreUI();
   renderLiveEvents();
 });
+
+document.getElementById('resetLiveEventsBtn').onclick = () => {
+  data.liveEvents = [];
+  saveData();
+  renderLiveEvents();
+};
