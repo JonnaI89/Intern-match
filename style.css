@@ -2,12 +2,9 @@ body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
   text-align: center;
-  padding: 2rem;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
@@ -31,27 +28,27 @@ h1 {
 .team-column {
   flex: 1 1 0;
   min-width: 0;
-  max-width: 320px;
+  max-width: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.3em;
 }
 
 .team-panel {
   background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+  border-radius: 7px;
+  box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-width: 40px;
-  max-width: 60px;      /* Even smaller */
-  font-size: 0.95em;
-  margin-bottom: 0.2em;
-  padding: 0.2em 0.1em; /* Less padding */
+  min-width: 30px;
+  max-width: 70px;
+  font-size: 0.9em;
+  margin-bottom: 0.1em;
+  padding: 0.1em 0.1em;
 }
 
 @media (max-width: 900px) {
@@ -94,18 +91,18 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 32px;
-  max-width: 32px;
-  height: 32px;
-  line-height: 32px;
-  font-size: 1.3em;
+  min-width: 22px;
+  max-width: 22px;
+  height: 22px;
+  line-height: 22px;
+  font-size: 1.1em;
   font-weight: bold;
   background: #fffbe7;
   color: #3b5998;
-  border-radius: 8px;
+  border-radius: 6px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
-  margin: 0.5em 0 0.2em 0;
+  box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
+  margin: 0.2em 0 0.1em 0;
   padding: 0;
 }
 
@@ -320,29 +317,27 @@ button:hover {
 .main-layout {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;           /* Prevent stacking */
   justify-content: center;
   align-items: flex-start;
-  gap: 0.7em;
+  gap: 0.4em;
   width: 100%;
-  max-width: 1100px;
+  max-width: 420px;
   margin: 0 auto;
-  overflow-x: auto;
+  padding: 0.5em 0.2em;
+  box-sizing: border-box;
 }
 
 .live-view {
-  flex: 0 0 220px;
-  min-width: 180px;
-  max-width: 320px;
+  flex: 0 0 100px;
+  min-width: 90px;
+  max-width: 120px;
   background: #fffbe7;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(44,62,80,0.07);
-  padding: 1.5em 2em;
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  border-radius: 7px;
+  box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+  padding: 0.7em 0.5em;
+  min-height: 60px;
+  font-size: 0.9em;
+  margin-left: 0.2em;
 }
 
 #liveEvents {
@@ -406,31 +401,26 @@ button:hover {
 
 @media (max-width: 600px) {
   .main-layout {
-    gap: 0.05em;
+    max-width: 99vw;
+    gap: 0.2em;
+    padding: 0.2em 0.1em;
   }
-  .team-column,
-  .live-view {
-    max-width: 28vw;
-    font-size: 0.75em;
+  .team-panel {
+    max-width: 50px;
+    font-size: 0.8em;
     padding: 0.05em 0.02em;
   }
   .score-value {
-    min-width: 18px;
-    max-width: 18px;
-    height: 18px;
-    line-height: 18px;
-    font-size: 1em;
-  }
-  h2, h3 {
+    min-width: 16px;
+    max-width: 16px;
+    height: 16px;
+    line-height: 16px;
     font-size: 0.9em;
   }
-  .period-box, #timerContainer {
-    font-size: 1em;
-    padding: 0.1em 0;
-  }
-  #timerDisplay {
-    font-size: 1.1em;
-    padding: 0.1em 0.3em;
+  .live-view {
+    max-width: 80px;
+    font-size: 0.8em;
+    padding: 0.3em 0.1em;
   }
 }
 
