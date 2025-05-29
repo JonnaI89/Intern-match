@@ -170,7 +170,12 @@ function formatTime(seconds) {
 }
 
 function updateTimerUI() {
-  timerDisplay.textContent = formatTime(timer.seconds);
+  // Show remaining time
+  let displaySeconds = timer.seconds;
+  if (timer.limit !== null) {
+    displaySeconds = Math.max(0, timer.limit - timer.seconds);
+  }
+  timerDisplay.textContent = formatTime(displaySeconds);
 }
 
 function saveTimer() {
@@ -206,14 +211,14 @@ function resetTimer() {
   saveTimer();
 }
 
-// Set timer limit in minutes
+// Set timer limit in MINUTES (change to SECONDS if you want)
 timerSetBtn.onclick = () => {
   const mins = parseInt(timerMinutesInput.value, 10) || 0;
   timer.limit = mins * 60;
   timer.seconds = 0;
   updateTimerUI();
   saveTimer();
-  pauseTimer(); // Make sure timer is stopped after setting
+  pauseTimer();
 };
 
 timerStart.onclick = () => startTimer();
@@ -224,7 +229,6 @@ onValue(ref(db, '/'), (snapshot) => {
   const dbData = snapshot.val();
   if (!dbData) return;
   periodDisplay.textContent = dbData.period || 1;
-  // Only update timer UI, don't overwrite timer.running or timerInterval
   if (typeof dbData.timer === 'object') {
     timer.seconds = dbData.timer.seconds || 0;
     timer.limit = dbData.timer.limit || null;
