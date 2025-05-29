@@ -190,6 +190,7 @@ function pauseTimer() {
   timer.running = false;
   saveTimer();
   clearInterval(timerInterval);
+  timerInterval = null;
 }
 
 function resetTimer() {
@@ -198,7 +199,10 @@ function resetTimer() {
   saveTimer();
 }
 
-// Period buttons
+timerStart.onclick = () => startTimer();
+timerPause.onclick = () => pauseTimer();
+timerReset.onclick = () => resetTimer();
+
 periodMinus.onclick = () => {
   let period = parseInt(periodDisplay.textContent, 10) || 1;
   period = Math.max(1, period - 1);
@@ -212,10 +216,16 @@ periodPlus.onclick = () => {
   update(ref(db, '/'), { period });
 };
 
-// Timer buttons
-timerStart.onclick = () => startTimer();
-timerPause.onclick = () => pauseTimer();
-timerReset.onclick = () => resetTimer();
+onValue(ref(db, '/'), (snapshot) => {
+  const data = snapshot.val();
+  if (!data) return;
+  // ...existing code for teams, players, etc...
+  periodDisplay.textContent = data.period || 1;
+  timer = data.timer || { running: false, seconds: 0 };
+  updateTimerUI();
+  if (timer.running && !timerInterval) startTimer();
+  if (!timer.running && timerInterval) pauseTimer();
+});
 
 // Name changes
 teamANameInput.onchange = () => {
