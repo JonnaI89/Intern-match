@@ -9,8 +9,12 @@ const playersAList = document.getElementById('playersAList');
 const playersBList = document.getElementById('playersBList');
 const scoreAEl = document.getElementById('scoreA');
 const scoreBEl = document.getElementById('scoreB');
+const periodDisplay = document.getElementById('periodDisplay');
+const periodMinus = document.getElementById('periodMinus');
+const periodPlus = document.getElementById('periodPlus');
 
 let data = {
+  period: 1,
   score: { A: 0, B: 0 },
   teams: {
     A: { name: 'Lag A', players: [] },
@@ -78,7 +82,7 @@ function renderPlayers(listEl, players, team) {
     statsDiv.className = 'player-controls';
     statsDiv.appendChild(goalsSpan);
     statsDiv.appendChild(goalBtn);
-    statsDiv.appendChild(goalMinusBtn); // Add minus button here
+    statsDiv.appendChild(goalMinusBtn);
     statsDiv.appendChild(assistsSpan);
     statsDiv.appendChild(assistBtn);
     statsDiv.appendChild(removeBtn);
@@ -94,6 +98,10 @@ function updateScoreUI() {
   scoreBEl.textContent = data.score.B;
 }
 
+function updatePeriodUI() {
+  periodDisplay.textContent = data.period || 1;
+}
+
 function saveData() {
   set(rootRef, data);
 }
@@ -104,6 +112,7 @@ function loadData() {
 
     if (!val || !val.teams || !val.teams.A || !val.teams.B) {
       data = {
+        period: 1,
         score: { A: 0, B: 0 },
         teams: {
           A: { name: 'Lag A', players: [] },
@@ -117,12 +126,14 @@ function loadData() {
       // Sørg for at players alltid er array
       if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
       if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
+      if (!data.period) data.period = 1;
     }
 
     teamANameInput.value = data.teams.A.name || 'Lag A';
     teamBNameInput.value = data.teams.B.name || 'Lag B';
 
     updateScoreUI();
+    updatePeriodUI();
     renderPlayers(playersAList, data.teams.A.players, 'A');
     renderPlayers(playersBList, data.teams.B.players, 'B');
 
@@ -139,6 +150,18 @@ function changeScore(team, delta) {
   updateScoreUI();
   saveData();
 }
+
+// Period buttons
+periodMinus.onclick = () => {
+  data.period = Math.max(1, (data.period || 1) - 1);
+  saveData();
+  updatePeriodUI();
+};
+periodPlus.onclick = () => {
+  data.period = (data.period || 1) + 1;
+  saveData();
+  updatePeriodUI();
+};
 
 // Navn-endringer
 teamANameInput.onchange = () => {
