@@ -7,6 +7,7 @@ const teamANameEl = document.getElementById('teamAName');
 const teamBNameEl = document.getElementById('teamBName');
 const playersAEl = document.getElementById('playersA');
 const playersBEl = document.getElementById('playersB');
+const periodView = document.getElementById('periodView');
 
 // Opprett og legg til timer-element øverst på siden
 const timerEl = document.createElement('div');
@@ -85,6 +86,9 @@ onValue(rootRef, (snapshot) => {
     li.textContent = `${player.name} - Mål: ${player.goals || 0}, Assist: ${player.assists || 0}`;
     playersBEl.appendChild(li);
   }
+
+  // Update period view
+  periodView.textContent = data.period || 1;
 
   updateTimerUI();
 });
