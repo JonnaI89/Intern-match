@@ -92,3 +92,82 @@ button {
 button:hover {
   background: #ff7043;
 }
+
+.admin-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(44, 62, 80, 0.10);
+  padding: 2.5rem 2rem;
+}
+
+.admin-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.teams-section {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.team-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+  padding: 1.5rem 1rem;
+  width: 320px;
+}
+
+.score-section, .timer-section {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+  padding: 1.5rem 1rem;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.score-controls {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.score-label {
+  font-weight: 600;
+  margin-right: 0.5em;
+}
+
+.score-value {
+  font-size: 2em;
+  font-weight: bold;
+  color: #ff7043;
+  background: #fbe9e7;
+  border-radius: 8px;
+  padding: 0.2em 0.8em;
+  margin: 0 0.5em;
+}
+
+.timer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7em;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+#timerDisplay {
+  font-size: 2em;
+  font-weight: bold;
+  color: #3b5998;
+  background: #e3eafc;
+  border-radius: 8px;
+  padding: 0.2em 1em;
+  margin-right: 1em;
+}
