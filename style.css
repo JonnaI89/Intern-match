@@ -47,11 +47,27 @@ h1 {
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-width: 90px;
-  max-width: 120px;
-  font-size: 1.15em;
+  min-width: 60px;
+  max-width: 90px;      /* Reduced from 120px */
+  font-size: 1em;       /* Slightly smaller */
   margin-bottom: 0.3em;
-  padding: 1em 0.5em; /* Add more vertical padding for better centering */
+  padding: 0.5em 0.2em; /* Less padding */
+}
+
+@media (max-width: 900px) {
+  .team-panel {
+    max-width: 70px;
+    font-size: 0.95em;
+    padding: 0.3em 0.1em;
+  }
+}
+
+@media (max-width: 600px) {
+  .team-panel {
+    max-width: 60px;
+    font-size: 0.85em;
+    padding: 0.2em 0.05em;
+  }
 }
 
 .score-row {
