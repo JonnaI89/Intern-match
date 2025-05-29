@@ -178,7 +178,7 @@ function saveTimer() {
 }
 
 function startTimer() {
-  if (timer.running) return;
+  if (timerInterval) clearInterval(timerInterval);
   timer.running = true;
   saveTimer();
   timerInterval = setInterval(() => {
@@ -194,8 +194,10 @@ function startTimer() {
 function pauseTimer() {
   timer.running = false;
   saveTimer();
-  clearInterval(timerInterval);
-  timerInterval = null;
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
 }
 
 function resetTimer() {
@@ -211,30 +213,29 @@ timerSetBtn.onclick = () => {
   timer.seconds = 0;
   updateTimerUI();
   saveTimer();
+  pauseTimer(); // Make sure timer is stopped after setting
 };
 
-periodMinus.onclick = () => {
-  let period = parseInt(periodDisplay.textContent, 10) || 1;
-  period = Math.max(1, period - 1);
-  periodDisplay.textContent = period;
-  update(ref(db, '/'), { period });
-};
-periodPlus.onclick = () => {
-  let period = parseInt(periodDisplay.textContent, 10) || 1;
-  period = period + 1;
-  periodDisplay.textContent = period;
-  update(ref(db, '/'), { period });
-};
+timerStart.onclick = () => startTimer();
+timerPause.onclick = () => pauseTimer();
+timerReset.onclick = () => resetTimer();
 
 onValue(ref(db, '/'), (snapshot) => {
-  const data = snapshot.val();
-  if (!data) return;
-  // ...existing code for teams, players, etc...
-  periodDisplay.textContent = data.period || 1;
-  timer = data.timer || { running: false, seconds: 0 };
-  updateTimerUI();
-  if (timer.running && !timerInterval) startTimer();
-  if (!timer.running && timerInterval) pauseTimer();
+  const dbData = snapshot.val();
+  if (!dbData) return;
+  periodDisplay.textContent = dbData.period || 1;
+  // Only update timer UI, don't overwrite timer.running or timerInterval
+  if (typeof dbData.timer === 'object') {
+    timer.seconds = dbData.timer.seconds || 0;
+    timer.limit = dbData.timer.limit || null;
+    updateTimerUI();
+    // Sync running state
+    if (dbData.timer.running && !timerInterval) {
+      startTimer();
+    } else if (!dbData.timer.running && timerInterval) {
+      pauseTimer();
+    }
+  }
 });
 
 // Name changes
