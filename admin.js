@@ -48,7 +48,6 @@ function renderPlayers(listEl, players, team) {
       renderPlayers(listEl, players, team);
     };
 
-    // NEW: Minus goal button
     const goalMinusBtn = document.createElement('button');
     goalMinusBtn.textContent = '− Mål';
     goalMinusBtn.onclick = () => {
