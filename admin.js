@@ -44,8 +44,6 @@ function renderPlayers(listEl, players, team) {
     goalBtn.textContent = '+ Mål';
     goalBtn.onclick = () => {
       player.goals = (player.goals || 0) + 1;
-      data.score[team]++;
-      updateScoreUI();
       saveData();
       renderPlayers(listEl, players, team);
     };
@@ -133,7 +131,6 @@ function changeScore(team, delta) {
   saveData();
 }
 
-
 // Navn-endringer
 teamANameInput.onchange = () => {
   data.teams.A.name = teamANameInput.value;
@@ -171,7 +168,6 @@ document.getElementById('scoreAMinus').addEventListener('click', () => changeSco
 document.getElementById('scoreBPlus').addEventListener('click', () => changeScore('B', 1));
 document.getElementById('scoreBMinus').addEventListener('click', () => changeScore('B', -1));
 
-
 // Funksjon for å skrive timerstatus til Firebase
 function updateTimerInFirebase(seconds, running, lastUpdate) {
   // Les eksisterende data først for å ikke overskrive score og teams
@@ -192,8 +188,6 @@ function updateTimerInFirebase(seconds, running, lastUpdate) {
 // Registrer callback til timeren
 registerTimerUpdateCallback(updateTimerInFirebase);
 
-// Resten av admin.js som før, knyttet til start/stop/reset/setTimerSeconds som kaller timer.js-funksjoner
-
 // Timer-knapper
 document.getElementById('startTimerBtn')?.addEventListener('click', () => startTimer());
 document.getElementById('stopTimerBtn')?.addEventListener('click', () => stopTimer());
@@ -204,6 +198,5 @@ document.getElementById('setTimerBtn')?.addEventListener('click', () => {
     setTimerSeconds(val);
   }
 });
-
 
 loadData();
