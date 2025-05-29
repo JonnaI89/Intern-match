@@ -170,11 +170,10 @@ function formatTime(seconds) {
 }
 
 function updateTimerUI() {
-  // Show remaining time
-  let displaySeconds = timer.seconds;
-  if (timer.limit !== null) {
-    displaySeconds = Math.max(0, timer.limit - timer.seconds);
-  }
+  // Show remaining time (countdown)
+  let displaySeconds = timer.limit !== null
+    ? Math.max(0, timer.limit - timer.seconds)
+    : timer.seconds;
   timerDisplay.textContent = formatTime(displaySeconds);
 }
 
@@ -192,6 +191,9 @@ function startTimer() {
     saveTimer();
     if (timer.limit !== null && timer.seconds >= timer.limit) {
       pauseTimer();
+      timer.seconds = timer.limit; // Snap to 0:00
+      updateTimerUI();
+      saveTimer();
     }
   }, 1000);
 }
@@ -211,7 +213,7 @@ function resetTimer() {
   saveTimer();
 }
 
-// Set timer limit in MINUTES (change to SECONDS if you want)
+// Set timer limit in MINUTES (input is minutes, change to seconds if you want)
 timerSetBtn.onclick = () => {
   const mins = parseInt(timerMinutesInput.value, 10) || 0;
   timer.limit = mins * 60;
