@@ -1,5 +1,5 @@
 // admin.js
-import { db, ref, onValue, set } from './firebase.js';
+import { db, ref, onValue, set, update } from './firebase.js';
 
 // HTML elements
 const teamANameInput = document.getElementById('teamANameInput');
@@ -11,6 +11,10 @@ const scoreBEl = document.getElementById('scoreB');
 const periodDisplay = document.getElementById('periodDisplay');
 const periodMinus = document.getElementById('periodMinus');
 const periodPlus = document.getElementById('periodPlus');
+const timerDisplay = document.getElementById('timerDisplay');
+const timerStart = document.getElementById('timerStart');
+const timerPause = document.getElementById('timerPause');
+const timerReset = document.getElementById('timerReset');
 
 let data = {
   period: 1,
@@ -153,17 +157,65 @@ function changeScore(team, delta) {
   saveData();
 }
 
+// Timer functions
+let timerInterval = null;
+let timer = { running: false, seconds: 0 };
+
+function formatTime(seconds) {
+  const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+  const s = String(seconds % 60).padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+function updateTimerUI() {
+  timerDisplay.textContent = formatTime(timer.seconds);
+}
+
+function saveTimer() {
+  update(ref(db, '/'), { timer });
+}
+
+function startTimer() {
+  if (timer.running) return;
+  timer.running = true;
+  saveTimer();
+  timerInterval = setInterval(() => {
+    timer.seconds++;
+    updateTimerUI();
+    saveTimer();
+  }, 1000);
+}
+
+function pauseTimer() {
+  timer.running = false;
+  saveTimer();
+  clearInterval(timerInterval);
+}
+
+function resetTimer() {
+  timer.seconds = 0;
+  updateTimerUI();
+  saveTimer();
+}
+
 // Period buttons
 periodMinus.onclick = () => {
-  data.period = Math.max(1, (data.period || 1) - 1);
-  saveData();
-  updatePeriodUI();
+  let period = parseInt(periodDisplay.textContent, 10) || 1;
+  period = Math.max(1, period - 1);
+  periodDisplay.textContent = period;
+  update(ref(db, '/'), { period });
 };
 periodPlus.onclick = () => {
-  data.period = (data.period || 1) + 1;
-  saveData();
-  updatePeriodUI();
+  let period = parseInt(periodDisplay.textContent, 10) || 1;
+  period = period + 1;
+  periodDisplay.textContent = period;
+  update(ref(db, '/'), { period });
 };
+
+// Timer buttons
+timerStart.onclick = () => startTimer();
+timerPause.onclick = () => pauseTimer();
+timerReset.onclick = () => resetTimer();
 
 // Name changes
 teamANameInput.onchange = () => {
