@@ -1,8 +1,4 @@
 // index.js
-timerData = data.timer || { seconds: 0, running: false, lastUpdate: Date.now() };
-if (!timerData.lastUpdate) {
-  timerData.lastUpdate = Date.now();
-
 import { db, ref, onValue } from './firebase.js';
 
 const scoreAEl = document.getElementById('scoreA');
