@@ -10,6 +10,16 @@
 <body>
   <h1>INTERN MATCH ADMIN</h1>
   
+  <!-- Period Controls Section (move to top of page) -->
+  <div class="section" style="max-width: 400px; margin: 0 auto 1.5em auto;">
+    <h3>Periode</h3>
+    <div class="period-controls">
+      <button id="periodMinus">-</button>
+      <span id="periodDisplay" class="period-box">1</span>
+      <button id="periodPlus">+</button>
+    </div>
+  </div>
+
   <!-- Team Names -->
   <div class="section">
     <label>Lag A: <input id="teamANameInput" /></label>
@@ -25,13 +35,6 @@
     <span id="scoreB">0</span>
     <button id="scoreBPlus">+</button>
     <button id="scoreBMinus">-</button>
-  </div>
-
-  <!-- Period Controls -->
-  <div class="period-controls">
-    <button id="periodMinus">-</button>
-    <span id="periodDisplay">1</span>
-    <button id="periodPlus">+</button>
   </div>
 
   <!-- Timer -->
