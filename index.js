@@ -49,3 +49,26 @@ onValue(rootRef, (snapshot) => {
   timer.running = data.timer?.running ?? false;
   updateTimerUI();
 });
+
+let timerInterval = null;
+
+function startViewTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    if (timer.secondsLeft > 0 && timer.running) {
+      timer.secondsLeft--;
+      updateTimerUI();
+    }
+    if (timer.secondsLeft <= 0 || !timer.running) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }, 1000);
+}
+
+function stopViewTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
