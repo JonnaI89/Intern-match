@@ -161,7 +161,7 @@ function changeScore(team, delta) {
 
 // Timer functions
 let timerInterval = null;
-let timer = { running: false, seconds: 0, limit: null };
+let timer = { running: false, secondsLeft: 0, originalLimit: 0 };
 
 function formatTime(seconds) {
   const m = String(Math.floor(seconds / 60)).padStart(2, '0');
@@ -170,11 +170,7 @@ function formatTime(seconds) {
 }
 
 function updateTimerUI() {
-  // Show remaining time (countdown)
-  let displaySeconds = timer.limit !== null
-    ? Math.max(0, timer.limit - timer.seconds)
-    : timer.seconds;
-  timerDisplay.textContent = formatTime(displaySeconds);
+  timerDisplay.textContent = formatTime(timer.secondsLeft);
 }
 
 function saveTimer() {
@@ -183,17 +179,17 @@ function saveTimer() {
 
 function startTimer() {
   if (timerInterval) clearInterval(timerInterval);
+  if (timer.secondsLeft <= 0) return;
   timer.running = true;
   saveTimer();
   timerInterval = setInterval(() => {
-    timer.seconds++;
-    updateTimerUI();
-    saveTimer();
-    if (timer.limit !== null && timer.seconds >= timer.limit) {
-      pauseTimer();
-      timer.seconds = timer.limit; // Snap to 0:00
+    if (timer.secondsLeft > 0) {
+      timer.secondsLeft--;
       updateTimerUI();
       saveTimer();
+      if (timer.secondsLeft === 0) {
+        pauseTimer();
+      }
     }
   }, 1000);
 }
@@ -208,16 +204,16 @@ function pauseTimer() {
 }
 
 function resetTimer() {
-  timer.seconds = 0;
+  timer.secondsLeft = timer.originalLimit;
   updateTimerUI();
   saveTimer();
 }
 
-// Set timer limit in MINUTES (input is minutes, change to seconds if you want)
+// Set timer in MINUTES (input is minutes)
 timerSetBtn.onclick = () => {
   const mins = parseInt(timerMinutesInput.value, 10) || 0;
-  timer.limit = mins * 60;
-  timer.seconds = 0;
+  timer.originalLimit = mins * 60;
+  timer.secondsLeft = timer.originalLimit;
   updateTimerUI();
   saveTimer();
   pauseTimer();
@@ -232,8 +228,8 @@ onValue(ref(db, '/'), (snapshot) => {
   if (!dbData) return;
   periodDisplay.textContent = dbData.period || 1;
   if (typeof dbData.timer === 'object') {
-    timer.seconds = dbData.timer.seconds || 0;
-    timer.limit = dbData.timer.limit || null;
+    timer.secondsLeft = dbData.timer.secondsLeft ?? timer.secondsLeft;
+    timer.originalLimit = dbData.timer.originalLimit ?? timer.originalLimit;
     updateTimerUI();
     // Sync running state
     if (dbData.timer.running && !timerInterval) {
