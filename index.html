@@ -9,24 +9,37 @@
 </head>
 <body>
   <h1>INTERN MATCH LIVE</h1>
-  <div class="container">
-    <div class="period-timer">
-      <div class="period">Periode: <span id="periodDisplay"></span></div>
-      <div class="timer">Tid: <span id="timerDisplay"></span></div>
-    </div>
-    <div class="teams">
-      <div class="team-card">
-        <div class="team-name" id="teamAName"></div>
-        <div class="score" id="scoreA"></div>
-        <ul class="players-list" id="playersAList"></ul>
+  <div class="period-box">
+    Periode: <span id="periodView">1</span>
+  </div>
+  <div id="timerContainer">
+    <div id="timerDisplay">00:00</div>
+  </div>
+  <div class="main-layout">
+    <div class="team-column">
+      <div class="team-panel">
+        <h2 id="teamAName">Lag A</h2>
+        <span id="scoreA" class="score-value">0</span>
       </div>
-      <div class="team-card">
-        <div class="team-name" id="teamBName"></div>
-        <div class="score" id="scoreB"></div>
-        <ul class="players-list" id="playersBList"></ul>
+      <div class="players-box">
+        <h3>Spillere Lag A:</h3>
+        <ul id="playersA"></ul>
       </div>
     </div>
-    <div class="live-events" id="liveEvents"></div>
+    <div class="live-view">
+      <h2>LIVE VIEW</h2>
+      <div id="liveEvents"></div>
+    </div>
+    <div class="team-column">
+      <div class="team-panel">
+        <h2 id="teamBName">Lag B</h2>
+        <span id="scoreB" class="score-value">0</span>
+      </div>
+      <div class="players-box">
+        <h3>Spillere Lag B:</h3>
+        <ul id="playersB"></ul>
+      </div>
+    </div>
   </div>
 </body>
 </html>
