@@ -6,7 +6,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center everything horizontally */
+  align-items: center;
   justify-content: flex-start;
 }
 
@@ -28,10 +28,16 @@ h1 {
   max-width: 800px;
 }
 
+.team-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .team-panel {
   background: #f9f9f9;
   border-radius: 10px;
-  padding: 0.5em 0.5em;
   box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
   display: flex;
   flex-direction: column;
@@ -53,33 +59,34 @@ h1 {
   margin-bottom: 0.5em;
 }
 
-#scoreA, #scoreB {
-  font-size: 2.5em;
-  font-weight: bold;
-  color:rgb(0, 0, 0);
-  background:rgb(255, 255, 255);
-  border-radius: 8px;
-  padding: 0.2em 0.8em;
-  margin-left: 0.5em;
-}
-
 .score-value {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0.3em 0 0 0; /* Remove bottom margin */
-  min-width: 38px;
-  max-width: 38px;
-  height: 38px;
-  line-height: 38px;
-  font-size: 2em;
+  min-width: 48px;
+  max-width: 48px;
+  height: 48px;
+  line-height: 48px;
+  font-size: 2.2em;
   font-weight: bold;
   background: #fffbe7;
   color: #3b5998;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+  margin: 0.5em 0 0.2em 0;
   padding: 0;
+}
+
+/* Remove conflicting styles from #scoreA and #scoreB */
+#scoreA, #scoreB {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
 }
 
 ul {
@@ -270,13 +277,6 @@ button:hover {
   max-height: 260px;
 }
 
-.team-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5em;
-}
-
 @media (max-width: 600px) {
   .scoreboard {
     flex-direction: row;
@@ -305,53 +305,5 @@ button:hover {
     max-width: 32px;
     height: 32px;
     line-height: 32px;
-  }
-  .scoreboard {
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  .scoreboard > div {
-    width: 100%;
-    padding: 1rem 0.5rem;
-    font-size: 0.95em;
-  }
-  h1 {
-    font-size: 1.3em;
-    margin-bottom: 1em;
-  }
-  h2 {
-    font-size: 1.1em;
-    margin-bottom: 0.3em;
-  }
-  h3 {
-    font-size: 1em;
-    margin-bottom: 0.2em;
-  }
-  p, .score-label, .score-value {
-    font-size: 1em;
-  }
-  ul {
-    font-size: 0.95em;
-  }
-  body {
-    padding: 0.5rem;
-  }
-  .team-card ul {
-    max-height: 200px;
-  }
-  li {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3em;
-    padding: 0.5em 0.5em;
-  }
-  li > * {
-    margin-right: 0;
-  }
-  .player-controls {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
   }
 }
