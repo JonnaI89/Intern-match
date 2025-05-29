@@ -10,11 +10,16 @@ const playersB = document.getElementById('playersB');
 const liveEvents = document.getElementById('liveEvents');
 const periodView = document.getElementById('periodView');
 const timerDisplay = document.getElementById('timerDisplay');
+let timer = { secondsLeft: 0, originalLimit: 0, running: false };
 
 function formatTime(seconds) {
   const m = String(Math.floor(seconds / 60)).padStart(2, '0');
   const s = String(seconds % 60).padStart(2, '0');
   return `${m}:${s}`;
+}
+
+function updateTimerUI() {
+  timerDisplay.textContent = formatTime(timer.secondsLeft);
 }
 
 const rootRef = ref(db, '/');
@@ -39,5 +44,8 @@ onValue(rootRef, (snapshot) => {
   periodView.textContent = data.period || 1;
 
   // Timer
-  timerDisplay.textContent = formatTime(data.timer?.seconds || 0);
+  timer.secondsLeft = data.timer?.secondsLeft ?? 0;
+  timer.originalLimit = data.timer?.originalLimit ?? 0;
+  timer.running = data.timer?.running ?? false;
+  updateTimerUI();
 });
