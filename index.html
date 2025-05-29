@@ -5,15 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>INTERN MATCH LIVE</title>
   <link rel="stylesheet" href="style.css" />
-  <script type="module" src="index.js"></script>
+  <script type="module" src="admin.js"></script>
 </head>
 <body>
   <h1>INTERN MATCH LIVE</h1>
-  <div class="period-box">
-    <span id="periodView">1</span>
-  </div>
-  <div id="timerContainer"></div>
-  <div class="scoreboard">
+  <div class="main-layout">
     <div class="team-column">
       <div class="team-panel">
         <h2 id="teamAName">Lag A</h2>
@@ -23,6 +19,33 @@
         <h3>Spillere Lag A:</h3>
         <ul id="playersA"></ul>
       </div>
+    </div>
+    <div class="live-view">
+      <h2>LIVE VIEW</h2>
+      <form id="goalForm">
+        <div>
+          <label>Lag:
+            <select id="teamSelect">
+              <option value="A">Lag A</option>
+              <option value="B">Lag B</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label>Målscorer:
+            <select id="scorerSelect"></select>
+          </label>
+        </div>
+        <div>
+          <label>Assist (valgfritt):
+            <select id="assistSelect">
+              <option value="">Ingen</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit">Registrer mål</button>
+      </form>
+      <div id="liveEvents"></div>
     </div>
     <div class="team-column">
       <div class="team-panel">
