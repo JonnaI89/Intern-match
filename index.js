@@ -30,7 +30,7 @@ function formatTime(totalSeconds) {
 }
 
 function updateTimerUI() {
-  timerEl.textContent = `Tid: ${formatTime(timerData.seconds)}`;
+  timerEl.textContent = formatTime(timerData.seconds);
 }
 
 // Oppdater timerData.seconds basert på tid som har gått siden sist oppdatering
