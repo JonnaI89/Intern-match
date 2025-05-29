@@ -36,12 +36,13 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Add this line */
-  text-align: center;      /* Add this line */
+  justify-content: center;
+  text-align: center;
   min-width: 90px;
   max-width: 120px;
   font-size: 1.15em;
   margin-bottom: 0.3em;
+  padding: 1em 0.5em; /* Add more vertical padding for better centering */
 }
 
 .score-row {
@@ -63,10 +64,10 @@ h1 {
 }
 
 .score-value {
-  display: flex;           /* Change to flex for centering */
-  align-items: center;     /* Center vertically */
-  justify-content: center; /* Center horizontally */
-  margin: 0.3em 0 0.2em 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.3em 0 0 0; /* Remove bottom margin */
   min-width: 38px;
   max-width: 38px;
   height: 38px;
@@ -78,7 +79,7 @@ h1 {
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
-  padding: 0; /* remove extra padding */
+  padding: 0;
 }
 
 ul {
