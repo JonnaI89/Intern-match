@@ -24,7 +24,7 @@ onValue(rootRef, (snapshot) => {
   playersA.innerHTML = (data.teams?.A?.players || []).map(p => `<li>${p.name || ''}</li>`).join('');
   playersB.innerHTML = (data.teams?.B?.players || []).map(p => `<li>${p.name || ''}</li>`).join('');
 
-  // Live events (if you store them in Firebase, otherwise skip or implement as needed)
+  // Live events
   if (data.liveEvents) {
     liveEvents.innerHTML = data.liveEvents.map(ev => `<div>${ev}</div>`).join('');
   }
