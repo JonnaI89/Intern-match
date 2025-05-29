@@ -1,4 +1,8 @@
 // index.js
+timerData = data.timer || { seconds: 0, running: false, lastUpdate: Date.now() };
+if (!timerData.lastUpdate) {
+  timerData.lastUpdate = Date.now();
+
 import { db, ref, onValue } from './firebase.js';
 
 const scoreAEl = document.getElementById('scoreA');
@@ -12,7 +16,7 @@ const playersBEl = document.getElementById('playersB');
 const timerEl = document.createElement('div');
 timerEl.style.fontSize = '1.5em';
 timerEl.style.marginBottom = '1em';
-document.body.insertBefore(timerEl, document.querySelector('.scoreboard'));
+document.getElementById('timerContainer').appendChild(timerEl);
 
 const rootRef = ref(db, '/');
 
@@ -88,4 +92,3 @@ onValue(rootRef, (snapshot) => {
 
   updateTimerUI();
 });
-
