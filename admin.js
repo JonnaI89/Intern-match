@@ -1,8 +1,7 @@
 // admin.js
 import { db, ref, onValue, set } from './firebase.js';
-import { initTimer, startTimer, stopTimer, resetTimer, setTimerSeconds, registerTimerUpdateCallback } from './timer.js';
 
-// HTML-elementer
+// HTML elements
 const teamANameInput = document.getElementById('teamANameInput');
 const teamBNameInput = document.getElementById('teamBNameInput');
 const playersAList = document.getElementById('playersAList');
@@ -19,7 +18,8 @@ let data = {
   teams: {
     A: { name: 'Lag A', players: [] },
     B: { name: 'Lag B', players: [] }
-  }
+  },
+  liveEvents: []
 };
 
 const rootRef = ref(db, '/');
@@ -117,16 +117,17 @@ function loadData() {
         teams: {
           A: { name: 'Lag A', players: [] },
           B: { name: 'Lag B', players: [] }
-        }
+        },
+        liveEvents: []
       };
       saveData();
     } else {
       data = val;
 
-      // Sørg for at players alltid er array
       if (!Array.isArray(data.teams.A.players)) data.teams.A.players = [];
       if (!Array.isArray(data.teams.B.players)) data.teams.B.players = [];
       if (!data.period) data.period = 1;
+      if (!Array.isArray(data.liveEvents)) data.liveEvents = [];
     }
 
     teamANameInput.value = data.teams.A.name || 'Lag A';
@@ -140,7 +141,8 @@ function loadData() {
     teamANameInput.disabled = false;
     teamBNameInput.disabled = false;
 
-    initTimer();
+    updateGoalFormDropdowns();
+    renderLiveEvents();
   });
 }
 
@@ -163,7 +165,7 @@ periodPlus.onclick = () => {
   updatePeriodUI();
 };
 
-// Navn-endringer
+// Name changes
 teamANameInput.onchange = () => {
   data.teams.A.name = teamANameInput.value;
   saveData();
@@ -173,7 +175,7 @@ teamBNameInput.onchange = () => {
   saveData();
 };
 
-// Legg til spillere
+// Add players
 document.getElementById('addPlayerA').onclick = () => {
   if (data.teams.A.players.length >= 20) {
     alert('Maks 20 spillere per lag');
@@ -182,6 +184,7 @@ document.getElementById('addPlayerA').onclick = () => {
   data.teams.A.players.push({ name: '', goals: 0, assists: 0 });
   saveData();
   renderPlayers(playersAList, data.teams.A.players, 'A');
+  updateGoalFormDropdowns();
 };
 
 document.getElementById('addPlayerB').onclick = () => {
@@ -192,75 +195,32 @@ document.getElementById('addPlayerB').onclick = () => {
   data.teams.B.players.push({ name: '', goals: 0, assists: 0 });
   saveData();
   renderPlayers(playersBList, data.teams.B.players, 'B');
+  updateGoalFormDropdowns();
 };
 
-// Poeng-knapper
+// Score buttons
 document.getElementById('scoreAPlus').addEventListener('click', () => changeScore('A', 1));
 document.getElementById('scoreAMinus').addEventListener('click', () => changeScore('A', -1));
 document.getElementById('scoreBPlus').addEventListener('click', () => changeScore('B', 1));
 document.getElementById('scoreBMinus').addEventListener('click', () => changeScore('B', -1));
 
-// Funksjon for å skrive timerstatus til Firebase
-function updateTimerInFirebase(seconds, running, lastUpdate) {
-  // Les eksisterende data først for å ikke overskrive score og teams
-  onValue(rootRef, (snapshot) => {
-    const currentData = snapshot.val() || {};
-    const newData = {
-      ...currentData,
-      timer: {
-        seconds,
-        running,
-        lastUpdate
-      }
-    };
-    set(rootRef, newData);
-  }, { onlyOnce: true });
-}
-
-// Registrer callback til timeren
-registerTimerUpdateCallback(updateTimerInFirebase);
-
-// Timer-knapper
-document.getElementById('startTimerBtn')?.addEventListener('click', () => startTimer());
-document.getElementById('stopTimerBtn')?.addEventListener('click', () => stopTimer());
-document.getElementById('resetTimerBtn')?.addEventListener('click', () => resetTimer());
-document.getElementById('setTimerBtn')?.addEventListener('click', () => {
-  const val = parseInt(document.getElementById('setTimerInput')?.value, 10);
-  if (!isNaN(val) && val >= 0) {
-    setTimerSeconds(val);
-  }
-});
-
-// Example player data (replace with your real data if needed)
-const playersA = ["Linus", "Herman", "Jonas"];
-const playersB = ["Ola", "Kari", "Per"];
-
-// Populate player lists
-document.getElementById('playersA').innerHTML = playersA.map(p => `<li>${p}</li>`).join('');
-document.getElementById('playersB').innerHTML = playersB.map(p => `<li>${p}</li>`).join('');
-
-// Helper to populate dropdowns
-function populateDropdown(select, players) {
-  select.innerHTML = players.map(p => `<option value="${p}">${p}</option>`).join('');
-}
-
-// Elements
+// Goal form dropdowns
 const teamSelect = document.getElementById('teamSelect');
 const scorerSelect = document.getElementById('scorerSelect');
 const assistSelect = document.getElementById('assistSelect');
-const scoreA = document.getElementById('scoreA');
-const scoreB = document.getElementById('scoreB');
-const liveEvents = document.getElementById('liveEvents');
-
-// Initial dropdown population
-function updatePlayerDropdowns() {
+function updateGoalFormDropdowns() {
   const team = teamSelect.value;
-  const players = team === "A" ? playersA : playersB;
-  populateDropdown(scorerSelect, players);
-  assistSelect.innerHTML = `<option value="">Ingen</option>` + players.map(p => `<option value="${p}">${p}</option>`).join('');
+  const players = team === "A" ? data.teams.A.players : data.teams.B.players;
+  scorerSelect.innerHTML = players.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+  assistSelect.innerHTML = `<option value="">Ingen</option>` + players.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
 }
-teamSelect.addEventListener('change', updatePlayerDropdowns);
-updatePlayerDropdowns();
+teamSelect.addEventListener('change', updateGoalFormDropdowns);
+
+// Live events
+const liveEventsDiv = document.getElementById('liveEvents');
+function renderLiveEvents() {
+  liveEventsDiv.innerHTML = (data.liveEvents || []).map(ev => `<div>${ev}</div>`).join('');
+}
 
 // Handle goal form
 document.getElementById('goalForm').addEventListener('submit', function(e) {
@@ -272,12 +232,13 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   const now = new Date();
   const time = now.toLocaleTimeString([], {minute: '2-digit', second: '2-digit'});
   // Update score
-  if (team === "A") scoreA.textContent = parseInt(scoreA.textContent) + 1;
-  else scoreB.textContent = parseInt(scoreB.textContent) + 1;
+  data.score[team] = (data.score[team] || 0) + 1;
   // Add event to live view
-  const eventDiv = document.createElement('div');
-  eventDiv.textContent = `${time} Goal ${scorer}${assist ? ' Assist ' + assist : ''}`;
-  liveEvents.prepend(eventDiv);
+  const eventText = `${time} Goal ${scorer}${assist ? ' Assist ' + assist : ''}`;
+  data.liveEvents = [eventText, ...(data.liveEvents || [])].slice(0, 30); // keep last 30 events
+  saveData();
+  updateScoreUI();
+  renderLiveEvents();
 });
 
 loadData();
