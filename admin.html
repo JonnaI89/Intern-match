@@ -8,44 +8,58 @@
   <script type="module" src="admin.js"></script>
 </head>
 <body>
-  <h1>Admin Kontrollpanel</h1>
-  
-  <div class="team" id="teamA">
-    <h2>Lag A</h2>
-    <label>Lag navn: <input type="text" id="teamANameInput" /></label>
-    <h3>Spillere (max 20):</h3>
-    <ul id="playersAList"></ul>
-    <button id="addPlayerA">Legg til spiller</button>
-  </div>
-  
-  <div class="team" id="teamB">
-    <h2>Lag B</h2>
-    <label>Lag navn: <input type="text" id="teamBNameInput" /></label>
-    <h3>Spillere (max 20):</h3>
-    <ul id="playersBList"></ul>
-    <button id="addPlayerB">Legg til spiller</button>
-  </div>
+  <div class="admin-wrapper">
+    <h1>Admin Kontrollpanel</h1>
+    <div class="admin-sections">
 
-  <h2>Score</h2>
-  <div>
-    <p>Lag A: <span id="scoreA">0</span> 
-      <button id="scoreAPlus">+1</button> 
-      <button id="scoreAMinus">-1</button>
-    </p>
-    <p>Lag B: <span id="scoreB">0</span> 
-      <button id="scoreBPlus">+1</button> 
-      <button id="scoreBMinus">-1</button>
-    </p>
-  </div>
+      <section class="teams-section">
+        <div class="team-card" id="teamA">
+          <h2>Lag A</h2>
+          <label>Lag navn: <input type="text" id="teamANameInput" /></label>
+          <h3>Spillere (max 20):</h3>
+          <ul id="playersAList"></ul>
+          <button id="addPlayerA">Legg til spiller</button>
+        </div>
+        <div class="team-card" id="teamB">
+          <h2>Lag B</h2>
+          <label>Lag navn: <input type="text" id="teamBNameInput" /></label>
+          <h3>Spillere (max 20):</h3>
+          <ul id="playersBList"></ul>
+          <button id="addPlayerB">Legg til spiller</button>
+        </div>
+      </section>
 
-  <h2>Timer</h2>
-  <div>
-    <div id="timerDisplay">00:00</div>
-    <input id="setTimerInput" type="number" min="0" placeholder="Sett sekunder" />
-    <button id="setTimerBtn">Sett timer</button>
-    <button id="startTimerBtn">Start</button>
-    <button id="stopTimerBtn">Stopp</button>
-    <button id="resetTimerBtn">Reset</button>
+      <section class="score-section">
+        <h2>Score</h2>
+        <div class="score-controls">
+          <div>
+            <span class="score-label">Lag A:</span>
+            <span id="scoreA" class="score-value">0</span>
+            <button id="scoreAPlus">+1</button>
+            <button id="scoreAMinus">-1</button>
+          </div>
+          <div>
+            <span class="score-label">Lag B:</span>
+            <span id="scoreB" class="score-value">0</span>
+            <button id="scoreBPlus">+1</button>
+            <button id="scoreBMinus">-1</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="timer-section">
+        <h2>Timer</h2>
+        <div class="timer-controls">
+          <div id="timerDisplay">00:00</div>
+          <input id="setTimerInput" type="number" min="0" placeholder="Sett sekunder" />
+          <button id="setTimerBtn">Sett timer</button>
+          <button id="startTimerBtn">Start</button>
+          <button id="stopTimerBtn">Stopp</button>
+          <button id="resetTimerBtn">Reset</button>
+        </div>
+      </section>
+
+    </div>
   </div>
 </body>
 </html>
