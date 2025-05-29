@@ -8,8 +8,16 @@ const scoreB = document.getElementById('scoreB');
 const playersA = document.getElementById('playersA');
 const playersB = document.getElementById('playersB');
 const liveEvents = document.getElementById('liveEvents');
+const periodView = document.getElementById('periodView');
+const timerDisplay = document.getElementById('timerDisplay');
 
 const rootRef = ref(db, '/');
+
+function formatTime(seconds) {
+  const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+  const s = String(seconds % 60).padStart(2, '0');
+  return `${m}:${s}`;
+}
 
 onValue(rootRef, (snapshot) => {
   const data = snapshot.val();
@@ -28,4 +36,10 @@ onValue(rootRef, (snapshot) => {
   if (data.liveEvents) {
     liveEvents.innerHTML = data.liveEvents.map(ev => `<div>${ev}</div>`).join('');
   }
+
+  // Period
+  periodView.textContent = data.period || 1;
+
+  // Timer
+  timerDisplay.textContent = formatTime(data.timer?.seconds || 0);
 });
