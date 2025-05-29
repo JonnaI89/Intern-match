@@ -327,3 +327,15 @@ document.getElementById('resetLiveEventsBtn').onclick = () => {
   saveData();
   renderLiveEvents();
 };
+
+periodMinus.onclick = () => {
+  data.period = Math.max(1, (data.period || 1) - 1);
+  updatePeriodUI();
+  saveData();
+};
+
+periodPlus.onclick = () => {
+  data.period = (data.period || 1) + 1;
+  updatePeriodUI();
+  saveData();
+};
