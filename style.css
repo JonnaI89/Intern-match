@@ -258,6 +258,13 @@ button:hover {
   max-height: 180px;
 }
 
+.team-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
 @media (max-width: 600px) {
   .scoreboard {
     flex-direction: row;
