@@ -67,11 +67,16 @@ function renderPlayers(listEl, players, team) {
     };
 
     li.appendChild(nameInput);
-    li.appendChild(goalsSpan);
-    li.appendChild(assistsSpan);
-    li.appendChild(goalBtn);
-    li.appendChild(assistBtn);
-    li.appendChild(removeBtn);
+
+    const statsDiv = document.createElement('div');
+    statsDiv.className = 'player-controls';
+    statsDiv.appendChild(goalsSpan);
+    statsDiv.appendChild(goalBtn);
+    statsDiv.appendChild(assistsSpan);
+    statsDiv.appendChild(assistBtn);
+    statsDiv.appendChild(removeBtn);
+
+    li.appendChild(statsDiv);
 
     listEl.appendChild(li);
   });
