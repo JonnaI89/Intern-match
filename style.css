@@ -211,7 +211,11 @@ button:hover {
   background: #e3eafc;
   border-radius: 8px;
   padding: 0.2em 1em;
-  margin-right: 1em;
+  display: inline-block;
+}
+
+#timerContainer {
+  margin-bottom: 1em;
 }
 
 #timerContainer div {
@@ -242,7 +246,7 @@ button:hover {
   font-size: 1.3em;
   border-radius: 8px;
   padding: 0.4em 1em;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
 }
 
@@ -371,5 +375,13 @@ button:hover {
   }
   h2, h3 {
     font-size: 0.9em;
+  }
+  .period-box, #timerContainer {
+    font-size: 1em;
+    padding: 0.2em 0;
+  }
+  #timerDisplay {
+    font-size: 1.2em;
+    padding: 0.1em 0.5em;
   }
 }
