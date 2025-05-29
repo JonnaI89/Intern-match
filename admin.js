@@ -15,6 +15,8 @@ const timerDisplay = document.getElementById('timerDisplay');
 const timerStart = document.getElementById('timerStart');
 const timerPause = document.getElementById('timerPause');
 const timerReset = document.getElementById('timerReset');
+const timerMinutesInput = document.getElementById('timerMinutesInput');
+const timerSetBtn = document.getElementById('timerSetBtn');
 
 let data = {
   period: 1,
@@ -302,5 +304,12 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   updateScoreUI();
   renderLiveEvents();
 });
+
+timerSetBtn.onclick = () => {
+  const mins = parseInt(timerMinutesInput.value, 10) || 0;
+  timer.seconds = mins * 60;
+  updateTimerUI();
+  saveTimer();
+};
 
 loadData();
