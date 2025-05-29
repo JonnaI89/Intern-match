@@ -44,8 +44,8 @@ h1 {
 #scoreA, #scoreB {
   font-size: 2.5em;
   font-weight: bold;
-  color: #000000;
-  background: #FFFFFF;
+  color:rgb(0, 0, 0);
+  background:rgb(255, 255, 255);
   border-radius: 8px;
   padding: 0.2em 0.8em;
   margin-left: 0.5em;
@@ -187,6 +187,14 @@ button:hover {
   border-radius: 8px;
   padding: 0.2em 1em;
   margin-right: 1em;
+}
+
+#timerContainer div {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #3b5998;
+  margin-bottom: 0.7em;
+  letter-spacing: 2px;
 }
 
 .player-controls {
