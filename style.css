@@ -283,11 +283,16 @@ button:hover {
   align-items: center;
   gap: 1em;
   font-size: 1.2em;
+  flex-wrap: wrap;         /* Allow controls to wrap on small screens */
+  min-width: 180px;        /* Prevent squishing */
+  justify-content: center; /* Center controls */
+  margin: 1em 0;
 }
 
 .period-controls button {
   font-size: 1.2em;
   padding: 0.2em 0.7em;
+  min-width: 36px;         /* Ensure buttons are not too small */
 }
 
 .players-section {
