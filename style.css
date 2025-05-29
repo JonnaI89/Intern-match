@@ -45,8 +45,8 @@ p {
 #scoreA, #scoreB {
   font-size: 2.5em;
   font-weight: bold;
-  color: #000000;
-  background: #FFFFFF;
+  color: #ff7043;
+  background: #fbe9e7;
   border-radius: 8px;
   padding: 0.2em 0.8em;
   margin-left: 0.5em;
@@ -189,6 +189,11 @@ button:hover {
   flex-wrap: wrap;
   gap: 0.3em;
   align-items: center;
+}
+
+.player-controls button {
+  display: inline-block;
+  margin: 0 2px;
 }
 
 @media (max-width: 600px) {
