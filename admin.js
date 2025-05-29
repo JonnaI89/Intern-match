@@ -116,6 +116,7 @@ function saveData() {
 let timerInterval = null;
 let timer = { running: false, secondsLeft: 0, originalLimit: 0 };
 let lastRunningState = null;
+let ignoreNextTimerUpdate = false;
 
 function formatTime(seconds) {
   const m = String(Math.floor(seconds / 60)).padStart(2, '0');
@@ -180,9 +181,18 @@ timerSetBtn.onclick = () => {
   pauseTimer();
 };
 
-timerStart.onclick = () => startTimer();
-timerPause.onclick = () => pauseTimer();
-timerReset.onclick = () => resetTimer();
+timerStart.onclick = () => {
+  ignoreNextTimerUpdate = true;
+  startTimer();
+};
+timerPause.onclick = () => {
+  ignoreNextTimerUpdate = true;
+  pauseTimer();
+};
+timerReset.onclick = () => {
+  ignoreNextTimerUpdate = true;
+  resetTimer();
+};
 
 onValue(ref(db, '/'), (snapshot) => {
   const dbData = snapshot.val();
@@ -196,6 +206,10 @@ onValue(ref(db, '/'), (snapshot) => {
     // Only start/stop timer if running state changed
     if (dbData.timer.running !== lastRunningState) {
       lastRunningState = dbData.timer.running;
+      if (ignoreNextTimerUpdate) {
+        ignoreNextTimerUpdate = false;
+        return; // Don't call startTimer or pauseTimer if we just triggered this change
+      }
       if (dbData.timer.running) {
         startTimer();
       } else {
