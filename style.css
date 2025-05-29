@@ -64,9 +64,15 @@ li {
   padding: 0.7em 1em;
   border-radius: 8px;
   display: flex;
+  flex-wrap: wrap; /* Allow content to wrap on small screens */
   align-items: center;
   justify-content: space-between;
   font-size: 1em;
+  gap: 0.5em; /* Add some gap between elements */
+}
+
+li > * {
+  margin-right: 0.3em;
 }
 
 input[type="text"] {
@@ -120,6 +126,12 @@ button:hover {
   box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
   padding: 1.5rem 1rem;
   width: 320px;
+}
+
+.team-card ul {
+  max-height: 350px;
+  overflow-y: auto;
+  margin-bottom: 1em;
 }
 
 .score-section, .timer-section {
@@ -203,5 +215,17 @@ button:hover {
   }
   body {
     padding: 0.5rem;
+  }
+  .team-card ul {
+    max-height: 200px;
+  }
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3em;
+    padding: 0.5em 0.5em;
+  }
+  li > * {
+    margin-right: 0;
   }
 }
