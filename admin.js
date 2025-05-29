@@ -231,4 +231,53 @@ document.getElementById('setTimerBtn')?.addEventListener('click', () => {
   }
 });
 
+// Example player data (replace with your real data if needed)
+const playersA = ["Linus", "Herman", "Jonas"];
+const playersB = ["Ola", "Kari", "Per"];
+
+// Populate player lists
+document.getElementById('playersA').innerHTML = playersA.map(p => `<li>${p}</li>`).join('');
+document.getElementById('playersB').innerHTML = playersB.map(p => `<li>${p}</li>`).join('');
+
+// Helper to populate dropdowns
+function populateDropdown(select, players) {
+  select.innerHTML = players.map(p => `<option value="${p}">${p}</option>`).join('');
+}
+
+// Elements
+const teamSelect = document.getElementById('teamSelect');
+const scorerSelect = document.getElementById('scorerSelect');
+const assistSelect = document.getElementById('assistSelect');
+const scoreA = document.getElementById('scoreA');
+const scoreB = document.getElementById('scoreB');
+const liveEvents = document.getElementById('liveEvents');
+
+// Initial dropdown population
+function updatePlayerDropdowns() {
+  const team = teamSelect.value;
+  const players = team === "A" ? playersA : playersB;
+  populateDropdown(scorerSelect, players);
+  assistSelect.innerHTML = `<option value="">Ingen</option>` + players.map(p => `<option value="${p}">${p}</option>`).join('');
+}
+teamSelect.addEventListener('change', updatePlayerDropdowns);
+updatePlayerDropdowns();
+
+// Handle goal form
+document.getElementById('goalForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const team = teamSelect.value;
+  const scorer = scorerSelect.value;
+  const assist = assistSelect.value;
+  // Get current time (mm:ss)
+  const now = new Date();
+  const time = now.toLocaleTimeString([], {minute: '2-digit', second: '2-digit'});
+  // Update score
+  if (team === "A") scoreA.textContent = parseInt(scoreA.textContent) + 1;
+  else scoreB.textContent = parseInt(scoreB.textContent) + 1;
+  // Add event to live view
+  const eventDiv = document.createElement('div');
+  eventDiv.textContent = `${time} Goal ${scorer}${assist ? ' Assist ' + assist : ''}`;
+  liveEvents.prepend(eventDiv);
+});
+
 loadData();
