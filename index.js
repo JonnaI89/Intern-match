@@ -1,105 +1,91 @@
+// index.js
 import { db, ref, onValue } from './firebase.js';
 
-const teamANameEl = document.getElementById('teamAName');
-const teamBNameEl = document.getElementById('teamBName');
 const scoreAEl = document.getElementById('scoreA');
 const scoreBEl = document.getElementById('scoreB');
-const playersAList = document.getElementById('playersA');
-const playersBList = document.getElementById('playersB');
-const timerDisplay = document.createElement('div');
+const teamANameEl = document.getElementById('teamAName');
+const teamBNameEl = document.getElementById('teamBName');
+const playersAEl = document.getElementById('playersA');
+const playersBEl = document.getElementById('playersB');
 
-// Legg til timer-display i toppen (kan justeres i HTML om ønskelig)
-document.body.insertBefore(timerDisplay, document.querySelector('.scoreboard'));
-
-let data = {
-  score: { A: 0, B: 0 },
-  teams: {
-    A: { name: 'Lag A', players: [] },
-    B: { name: 'Lag B', players: [] }
-  },
-  timer: {
-    seconds: 0,
-    running: false,
-    lastUpdate: 0
-  }
-};
+// Opprett og legg til timer-element øverst på siden
+const timerEl = document.createElement('div');
+timerEl.style.fontSize = '1.5em';
+timerEl.style.marginBottom = '1em';
+document.body.insertBefore(timerEl, document.querySelector('.scoreboard'));
 
 const rootRef = ref(db, '/');
 
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
-  const secs = (seconds % 60).toString().padStart(2, '0');
-  return `${mins}:${secs}`;
+let timerData = {
+  seconds: 0,
+  running: false,
+  lastUpdate: 0
+};
+
+function formatTime(totalSeconds) {
+  const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+  const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${seconds}`;
 }
 
 function updateTimerUI() {
-  timerDisplay.textContent = `Tid: ${formatTime(data.timer.seconds)}`;
+  timerEl.textContent = `Tid: ${formatTime(timerData.seconds)}`;
 }
 
-function updateUI() {
-  teamANameEl.textContent = data.teams.A.name || 'Lag A';
-  teamBNameEl.textContent = data.teams.B.name || 'Lag B';
-  scoreAEl.textContent = data.score.A;
-  scoreBEl.textContent = data.score.B;
-
-  playersAList.innerHTML = '';
-  (data.teams.A.players || []).forEach(player => {
-    const li = document.createElement('li');
-    li.textContent = `${player.name || '-'} (Mål: ${player.goals || 0}, Assist: ${player.assists || 0})`;
-    playersAList.appendChild(li);
-  });
-
-  playersBList.innerHTML = '';
-  (data.teams.B.players || []).forEach(player => {
-    const li = document.createElement('li');
-    li.textContent = `${player.name || '-'} (Mål: ${player.goals || 0}, Assist: ${player.assists || 0})`;
-    playersBList.appendChild(li);
-  });
-
+// Oppdater timerData.seconds basert på tid som har gått siden sist oppdatering
+function updateTimerFromNow() {
+  if (timerData.running && timerData.lastUpdate) {
+    const now = Date.now();
+    const elapsedSec = Math.floor((now - timerData.lastUpdate) / 1000);
+    if (elapsedSec > 0) {
+      timerData.seconds += elapsedSec;
+      timerData.lastUpdate = now;
+    }
+  }
   updateTimerUI();
 }
 
-let timerInterval = null;
+// Kjør oppdatering jevnlig (hver 0.5 sekund)
+setInterval(() => {
+  updateTimerFromNow();
+}, 500);
 
-function startTimerInterval() {
-  if (timerInterval) return; // allerede startet
-
-  timerInterval = setInterval(() => {
-    if (data.timer.running) {
-      // Kalkuler økning i tid basert på siste oppdatering for å unngå drifting
-      const now = Date.now();
-      const elapsed = Math.floor((now - data.timer.lastUpdate) / 1000);
-      if (elapsed > 0) {
-        data.timer.seconds += elapsed;
-        data.timer.lastUpdate = now;
-        updateTimerUI();
-      }
-    }
-  }, 500);
-}
-
-function stopTimerInterval() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-}
-
-// Lytt til data fra Firebase
 onValue(rootRef, (snapshot) => {
-  const val = snapshot.val();
-  if (!val) return;
+  const data = snapshot.val() || {};
+  const score = data.score || { A: 0, B: 0 };
+  const teams = data.teams || {
+    A: { name: 'Lag A', players: [] },
+    B: { name: 'Lag B', players: [] }
+  };
 
-  data = val;
+  // Hent timer-data fra Firebase, med fallback
+  timerData = data.timer || { seconds: 0, running: false, lastUpdate: Date.now() };
 
-  // Hvis timer.lastUpdate ikke finnes, sett den til nå
-  if (!data.timer) {
-    data.timer = { seconds: 0, running: false, lastUpdate: Date.now() };
-  } else if (!data.timer.lastUpdate) {
-    data.timer.lastUpdate = Date.now();
+  // Hvis lastUpdate ikke finnes, sett til nå
+  if (!timerData.lastUpdate) {
+    timerData.lastUpdate = Date.now();
   }
 
-  updateUI();
-  startTimerInterval();
+  scoreAEl.textContent = score.A;
+  scoreBEl.textContent = score.B;
+  teamANameEl.textContent = teams.A.name || 'Lag A';
+  teamBNameEl.textContent = teams.B.name || 'Lag B';
+
+  playersAEl.innerHTML = '';
+  playersBEl.innerHTML = '';
+
+  for (const player of teams.A.players || []) {
+    const li = document.createElement('li');
+    li.textContent = `${player.name} - Mål: ${player.goals || 0}, Assist: ${player.assists || 0}`;
+    playersAEl.appendChild(li);
+  }
+
+  for (const player of teams.B.players || []) {
+    const li = document.createElement('li');
+    li.textContent = `${player.name} - Mål: ${player.goals || 0}, Assist: ${player.assists || 0}`;
+    playersBEl.appendChild(li);
+  }
+
+  updateTimerUI();
 });
 
