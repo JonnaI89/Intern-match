@@ -29,8 +29,9 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 110px;
-  max-width: 140px;
+  min-width: 140px;
+  max-width: 220px;
+  font-size: 1.1em;
 }
 
 .score-row {
@@ -242,12 +243,15 @@ button:hover {
 }
 
 .players-box {
-  width: 220px;
+  width: 100%;
+  max-width: 220px;
+  min-height: 80px;
+  font-size: 1em;
+  margin-top: 0.7em;
+  padding: 0.7em 1em;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(44, 62, 80, 0.07);
-  padding: 0.5em 0.7em;
-  margin-top: 0.5em;
   overflow-y: auto;
   max-height: 220px;
 }
@@ -258,8 +262,9 @@ button:hover {
     gap: 0.5em;
   }
   .team-panel {
-    min-width: 90px;
-    max-width: 40vw;
+    min-width: 120px;
+    max-width: 95vw;
+    font-size: 1em;
     padding: 0.5em 0.2em;
   }
   .players-section {
@@ -270,14 +275,14 @@ button:hover {
   .players-box {
     max-width: 95vw;
     width: 95vw;
-    font-size: 0.95em;
+    font-size: 1em;
   }
   .score-value {
-    min-width: 32px;
-    max-width: 32px;
-    height: 32px;
-    line-height: 32px;
-    font-size: 1.3em;
+    font-size: 1.7em;
+    min-width: 38px;
+    max-width: 38px;
+    height: 38px;
+    line-height: 38px;
   }
   .scoreboard {
     flex-direction: column;
