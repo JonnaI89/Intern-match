@@ -8,38 +8,33 @@
   <script type="module" src="index.js"></script>
 </head>
 <body>
-  <h1>INTERN MATCH LIVE</h1>
-  <div class="period-box">
-    Periode: <span id="periodView">1</span>
+  <header>
+    <h1 id="mainHeading">INTERN MATCH LIVE</h1>
+  </header>
+  <div class="status-bar">
+    <span>Periode: <span id="periodView"></span></span>
+    <span class="timer" id="timerDisplay"></span>
   </div>
-  <div id="timerContainer">
-    <div id="timerDisplay">00:00</div>
-  </div>
-  <div class="main-layout">
-    <div class="team-column">
-      <div class="team-panel">
-        <h2 id="teamAName">Lag A</h2>
-        <span id="scoreA" class="score-value">0</span>
-      </div>
-      <div class="players-box">
-        <h3>Spillere:</h3>
-        <ul id="playersA"></ul>
-      </div>
+  <div class="scoreboard">
+    <div class="team">
+      <h2 id="teamAName"></h2>
+      <div class="score" id="scoreA"></div>
     </div>
-    <div class="live-view">
-      <h2>INFO</h2>
-      <div id="liveEvents"></div>
-    </div>
-    <div class="team-column">
-      <div class="team-panel">
-        <h2 id="teamBName">Lag B</h2>
-        <span id="scoreB" class="score-value">0</span>
-      </div>
-      <div class="players-box">
-        <h3>Spillere:</h3>
-        <ul id="playersB"></ul>
-      </div>
+    <div class="team">
+      <h2 id="teamBName"></h2>
+      <div class="score" id="scoreB"></div>
     </div>
   </div>
+  <div class="lineups">
+    <div class="lineup">
+      <h3>Lag A</h3>
+      <ul id="playersA"></ul>
+    </div>
+    <div class="lineup">
+      <h3>Lag B</h3>
+      <ul id="playersB"></ul>
+    </div>
+  </div>
+  <div class="live-view" id="liveEvents"></div>
 </body>
 </html>
