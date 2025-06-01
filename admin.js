@@ -114,7 +114,7 @@ function saveData() {
 
 // Timer functions
 let timerInterval = null;
-let timer = { running: false, secondsLeft: 0, originalLimit: 0 };
+let timer = { running: false, secondsElapsed: 0, originalLimit: 0 }; // Change secondsLeft to secondsElapsed
 let lastRunningState = null;
 let ignoreNextTimerUpdate = false;
 
@@ -125,7 +125,7 @@ function formatTime(seconds) {
 }
 
 function updateTimerUI() {
-  timerDisplay.textContent = formatTime(timer.secondsLeft);
+  timerDisplay.textContent = formatTime(timer.secondsElapsed);
 }
 
 function saveTimer() {
@@ -134,16 +134,16 @@ function saveTimer() {
 
 function startTimer() {
   if (timerInterval) clearInterval(timerInterval);
-  if (timer.secondsLeft <= 0) return;
+  if (timer.secondsElapsed >= timer.originalLimit) return;
   timer.running = true;
   lastRunningState = true;
   saveTimer();
   timerInterval = setInterval(() => {
-    if (timer.secondsLeft > 0) {
-      timer.secondsLeft--;
+    if (timer.secondsElapsed < timer.originalLimit) {
+      timer.secondsElapsed++;
       updateTimerUI();
       saveTimer();
-      if (timer.secondsLeft === 0) {
+      if (timer.secondsElapsed === timer.originalLimit) {
         pauseTimer();
       }
     }
@@ -161,8 +161,8 @@ function pauseTimer() {
 }
 
 function resetTimer() {
-  timer.running = false; // Always pause on reset
-  timer.secondsLeft = timer.originalLimit;
+  timer.running = false;
+  timer.secondsElapsed = 0;
   updateTimerUI();
   saveTimer();
   if (timerInterval) {
@@ -175,7 +175,7 @@ function resetTimer() {
 timerSetBtn.onclick = () => {
   const mins = parseInt(timerMinutesInput.value, 10) || 0;
   timer.originalLimit = mins * 60;
-  timer.secondsLeft = timer.originalLimit;
+  timer.secondsElapsed = 0;
   updateTimerUI();
   saveTimer();
   pauseTimer();
@@ -199,7 +199,7 @@ onValue(ref(db, '/'), (snapshot) => {
   if (!dbData) return;
   periodDisplay.textContent = dbData.period || 1;
   if (typeof dbData.timer === 'object') {
-    timer.secondsLeft = dbData.timer.secondsLeft ?? timer.secondsLeft;
+    timer.secondsElapsed = dbData.timer.secondsElapsed ?? timer.secondsElapsed;
     timer.originalLimit = dbData.timer.originalLimit ?? timer.originalLimit;
     updateTimerUI();
 
@@ -289,9 +289,8 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   const team = teamSelect.value;
   const scorer = scorerSelect.value;
   const assist = assistSelect.value;
-  // Get current time (mm:ss)
-  const now = new Date();
-  const time = now.toLocaleTimeString([], {minute: '2-digit', second: '2-digit'});
+  // Use the match clock as timestamp
+  const time = formatTime(timer.secondsElapsed);
   // Update score
   data.score[team] = (data.score[team] || 0) + 1;
   // Add event to live view
