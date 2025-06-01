@@ -126,6 +126,15 @@ ul li {
   font-size: 1em;
 }
 
+.live-title {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+  color: #007aff;
+  letter-spacing: 1px;
+}
+
 @media (max-width: 400px) {
   .lineups {
     flex-direction: column;
