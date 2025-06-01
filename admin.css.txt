@@ -1,0 +1,90 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f6fa;
+  color: #222;
+  padding: 0;
+}
+
+header, h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin: 1.5rem 0 1rem 0;
+  color: #222;
+  font-weight: 700;
+}
+
+.container, .admin-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+input[type="text"], input[type="number"] {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  padding: 0.4rem 1rem;
+  margin: 0.2rem;
+  border: none;
+  border-radius: 6px;
+  background: #007aff;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #005bb5;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player-controls {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+input[type="text"] {
+  min-width: 120px;
+}
+
+@media (max-width: 700px) {
+  .container, .admin-wrapper {
+    padding: 1rem 0.2rem;
+    max-width: 100%;
+  }
+  h1 {
+    font-size: 1.3rem;
+  }
+}
