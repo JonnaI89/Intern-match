@@ -47,7 +47,9 @@ onValue(rootRef, (snapshot) => {
   timer.secondsLeft = data.timer?.secondsLeft ?? 0;
   timer.originalLimit = data.timer?.originalLimit ?? 0;
   timer.running = data.timer?.running ?? false;
-  updateTimerUI();
+  if (typeof data.timer === 'object') {
+    timerDisplay.textContent = formatTime(data.timer.secondsElapsed || 0);
+  }
 });
 
 let timerInterval = null;
