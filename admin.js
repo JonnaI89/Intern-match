@@ -25,7 +25,8 @@ let data = {
     A: { name: 'Lag A', players: [] },
     B: { name: 'Lag B', players: [] }
   },
-  liveEvents: []
+  liveEvents: [],
+  title: 'INTERN MATCH LIVE'
 };
 
 const rootRef = ref(db, '/');
