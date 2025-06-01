@@ -42,7 +42,9 @@ onValue(rootRef, (snapshot) => {
   playersB.innerHTML = (data.teams?.B?.players || []).map(p => `<li>${p.name || ''}</li>`).join('');
 
   if (data.liveEvents) {
-    liveEvents.innerHTML = data.liveEvents.map(ev => `<div>${ev}</div>`).join('');
+    liveEvents.innerHTML = data.liveEvents.map(ev =>
+      `<div>Periode ${ev.period}: ${ev.time} ${ev.text}</div>`
+    ).join('');
   }
 
   // Period
