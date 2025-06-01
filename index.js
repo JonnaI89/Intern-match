@@ -24,9 +24,16 @@ function updateTimerUI() {
 
 const rootRef = ref(db, '/');
 
+const heading = document.querySelector('h1');
+
 onValue(rootRef, (snapshot) => {
   const data = snapshot.val();
   if (!data) return;
+
+  // Update heading/title dynamically from database
+  if (heading && data.title !== undefined) {
+    heading.textContent = data.title;
+  }
 
   teamAName.textContent = data.teams?.A?.name || 'Lag A';
   teamBName.textContent = data.teams?.B?.name || 'Lag B';
