@@ -10,6 +10,7 @@ const playersB = document.getElementById('playersB');
 const liveEvents = document.getElementById('liveEvents');
 const periodView = document.getElementById('periodView');
 const timerDisplay = document.getElementById('timerDisplay');
+const messageBar = document.getElementById('messageBar');
 let timer = { secondsLeft: 0, originalLimit: 0, running: false };
 
 function formatTime(seconds) {
@@ -25,12 +26,9 @@ function updateTimerUI() {
 const rootRef = ref(db, '/');
 
 const heading = document.querySelector('h1');
-
 onValue(rootRef, (snapshot) => {
   const data = snapshot.val();
   if (!data) return;
-
-  // Update heading/title dynamically from database
   if (heading && data.title !== undefined) {
     heading.textContent = data.title;
   }
@@ -56,6 +54,10 @@ onValue(rootRef, (snapshot) => {
   timer.running = data.timer?.running ?? false;
   if (typeof data.timer === 'object') {
     timerDisplay.textContent = formatTime(data.timer.secondsElapsed || 0);
+  }
+
+  if (messageBar) {
+    messageBar.textContent = data.message || '';
   }
 });
 
