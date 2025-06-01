@@ -83,12 +83,14 @@ header h1, h1 {
 }
 
 .lineups {
-  display: flex;
+  display: flex !important;
+  flex-direction: row !important;
   justify-content: center;
   gap: 1rem;
   width: 100%;
   max-width: 400px;
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .lineup {
@@ -96,7 +98,8 @@ header h1, h1 {
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   text-align: center;
 }
 
