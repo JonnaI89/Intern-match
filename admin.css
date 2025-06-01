@@ -103,3 +103,17 @@ input[type="text"] {
     font-size: 1.3rem;
   }
 }
+
+<body>
+  <header>
+    <h1>INTERN MATCH ADMIN</h1>
+  </header>
+  <div class="admin-container">
+    <!-- All your admin sections go here -->
+    <!-- Example: -->
+    <div class="section">
+      <!-- Period Controls, Team Names, etc. -->
+    </div>
+    <!-- ...rest of your admin content... -->
+  </div>
+</body>
