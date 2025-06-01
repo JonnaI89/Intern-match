@@ -302,11 +302,13 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   renderLiveEvents();
 });
 
-document.getElementById('resetLiveEventsBtn').onclick = () => {
-  data.liveEvents = [];
-  saveData();
-  renderLiveEvents();
-};
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('resetLiveEventsBtn').onclick = () => {
+    data.liveEvents = [];
+    saveData();
+    renderLiveEvents();
+  };
+});
 
 // Period controls
 periodMinus.onclick = () => {
