@@ -297,7 +297,14 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   data.score[team] = (data.score[team] || 0) + 1;
   // Add event to live view
   const eventText = `${time} Goal ${scorer}${assist ? ' Assist ' + assist : ''}`;
-  data.liveEvents = [eventText, ...(data.liveEvents || [])].slice(0, 30); // keep last 30 events
+  // When registering a new live event
+  const event = {
+    period: data.period,
+    time: formatTime(data.timer?.secondsElapsed || 0),
+    text: `Goal ${scorer} Assist ${assist}`
+  };
+  data.liveEvents = data.liveEvents || [];
+  data.liveEvents.push(event);
   saveData();
   updateScoreUI();
   renderLiveEvents();
@@ -324,7 +331,6 @@ periodPlus.onclick = () => {
   saveData();
 };
 
-// Set input value from database on load
 onValue(ref(db, '/'), (snapshot) => {
   const dbData = snapshot.val();
   if (!dbData) return;
@@ -332,8 +338,6 @@ onValue(ref(db, '/'), (snapshot) => {
     titleInput.value = dbData.title;
   }
 });
-
-// Save to database when changed
 if (titleInput) {
   titleInput.addEventListener('input', () => {
     data.title = titleInput.value;
