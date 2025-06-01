@@ -17,6 +17,7 @@ const timerPause = document.getElementById('timerPause');
 const timerReset = document.getElementById('timerReset');
 const timerMinutesInput = document.getElementById('timerMinutesInput');
 const timerSetBtn = document.getElementById('timerSetBtn');
+const titleInput = document.getElementById('titleInput');
 
 let data = {
   period: 1,
@@ -322,3 +323,20 @@ periodPlus.onclick = () => {
   updatePeriodUI();
   saveData();
 };
+
+// Set input value from database on load
+onValue(ref(db, '/'), (snapshot) => {
+  const dbData = snapshot.val();
+  if (!dbData) return;
+  if (titleInput && dbData.title !== undefined) {
+    titleInput.value = dbData.title;
+  }
+});
+
+// Save to database when changed
+if (titleInput) {
+  titleInput.addEventListener('input', () => {
+    data.title = titleInput.value;
+    saveData();
+  });
+}
