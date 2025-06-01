@@ -93,23 +93,6 @@ input[type="text"] {
   min-width: 120px;
 }
 
-@media (min-width: 768px) {
-  body > * {
-    display: none;
-  }
-  body::before {
-    content: "Denne siden er kun tilgjengelig på mobil.";
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-size: 1.5rem;
-    color: red;
-    padding: 1rem;
-    text-align: center;
-    background-color: #fff;
-  }
-}
 
 @media (max-width: 600px) {
   .admin-container {
