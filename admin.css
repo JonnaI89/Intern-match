@@ -84,9 +84,7 @@ ul li {
 }
 
 .player-controls {
-  display: flex;
-  gap: 0.3rem;
-  align-items: center;
+  display: none !important;
 }
 
 input[type="text"] {
