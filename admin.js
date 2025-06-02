@@ -300,16 +300,14 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   const scorer = scorerSelect.value;
   const assist = assistSelect.value;
   // Use the match clock as timestamp
-  const time = formatTime(timer.secondsElapsed);
+  const time = formatTime(timer.secondsElapsed); // <-- FIXED
   // Update score
   data.score[team] = (data.score[team] || 0) + 1;
   // Add event to live view
-  const eventText = `${time} Goal ${scorer}${assist ? ' Assist ' + assist : ''}`;
-  // When registering a new live event
   const event = {
     period: data.period,
-    time: formatTime(data.timer?.secondsElapsed || 0), // <-- This should be the current time on the clock
-    text: `Goal ${scorer} Assist ${assist}`
+    time: time, // <-- FIXED
+    text: `Goal ${scorer}${assist ? ' Assist ' + assist : ''}` // <-- FIXED
   };
   data.liveEvents = data.liveEvents || [];
   data.liveEvents.push(event);
