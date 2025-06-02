@@ -300,7 +300,7 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   // When registering a new live event
   const event = {
     period: data.period,
-    time: formatTime(data.timer?.secondsElapsed || 0),
+    time: formatTime(data.timer?.secondsElapsed || 0), // <-- This should be the current time on the clock
     text: `Goal ${scorer} Assist ${assist}`
   };
   data.liveEvents = data.liveEvents || [];
