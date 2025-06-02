@@ -300,13 +300,11 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   const scorer = scorerSelect.value;
   const assist = assistSelect.value;
 
-  // Use the match clock as timestamp (local timer object)
-  const time = formatTime(timer.secondsElapsed);
+  // Use the visible clock as timestamp (what admin sees)
+  const time = timerDisplay.textContent;
 
-  // Update score
   data.score[team] = (data.score[team] || 0) + 1;
 
-  // Add event to live view
   const event = {
     period: data.period,
     time: time,
