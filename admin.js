@@ -282,7 +282,15 @@ teamSelect.addEventListener('change', updateGoalFormDropdowns);
 // Live events
 const liveEventsDiv = document.getElementById('liveEvents');
 function renderLiveEvents() {
-  liveEventsDiv.innerHTML = (data.liveEvents || []).map(ev => `<div>${ev}</div>`).join('');
+  liveEventsDiv.innerHTML = (data.liveEvents || []).map(ev => {
+    if (typeof ev === 'object' && ev !== null) {
+      return `<div>Periode ${ev.period}: ${ev.time} ${ev.text}</div>`;
+    } else if (typeof ev === 'string') {
+      return `<div>${ev}</div>`;
+    } else {
+      return '';
+    }
+  }).join('');
 }
 
 // Handle goal form
