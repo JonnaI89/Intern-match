@@ -354,3 +354,31 @@ if (titleInput) {
     saveData();
   });
 }
+
+document.getElementById('updateStatsBtn').onclick = function() {
+  // Calculate stats from liveEvents
+  const stats = {};
+  (data.liveEvents || []).forEach(ev => {
+    if (typeof ev !== 'object' || !ev.text) return;
+    const goalMatch = ev.text.match(/^Goal ([^ ]+)/);
+    const assistMatch = ev.text.match(/Assist ([^ ]+)/);
+
+    if (goalMatch) {
+      const scorer = goalMatch[1];
+      stats[scorer] = stats[scorer] || { goals: 0, assists: 0, points: 0 };
+      stats[scorer].goals += 1;
+      stats[scorer].points += 1;
+    }
+    if (assistMatch) {
+      const assist = assistMatch[1];
+      stats[assist] = stats[assist] || { goals: 0, assists: 0, points: 0 };
+      stats[assist].assists += 1;
+      stats[assist].points += 1;
+    }
+  });
+
+  // Save stats to Firebase
+  set(ref(db, '/stats'), stats)
+    .then(() => alert('Statistikk oppdatert!'))
+    .catch(err => alert('Feil ved oppdatering av statistikk: ' + err));
+};
