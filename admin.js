@@ -299,15 +299,18 @@ document.getElementById('goalForm').addEventListener('submit', function(e) {
   const team = teamSelect.value;
   const scorer = scorerSelect.value;
   const assist = assistSelect.value;
-  // Use the match clock as timestamp
-  const time = formatTime(timer.secondsElapsed); // <-- FIXED
+
+  // Use the match clock as timestamp (local timer object)
+  const time = formatTime(timer.secondsElapsed);
+
   // Update score
   data.score[team] = (data.score[team] || 0) + 1;
+
   // Add event to live view
   const event = {
     period: data.period,
-    time: time, // <-- FIXED
-    text: `Goal ${scorer}${assist ? ' Assist ' + assist : ''}` // <-- FIXED
+    time: time,
+    text: `Goal ${scorer}${assist ? ' Assist ' + assist : ''}`
   };
   data.liveEvents = data.liveEvents || [];
   data.liveEvents.push(event);
@@ -343,6 +346,9 @@ onValue(ref(db, '/'), (snapshot) => {
   if (titleInput && dbData.title !== undefined) {
     titleInput.value = dbData.title;
   }
+  // Add this to always render the latest live events
+  data.liveEvents = dbData.liveEvents || [];
+  renderLiveEvents();
 });
 if (titleInput) {
   titleInput.addEventListener('input', () => {
