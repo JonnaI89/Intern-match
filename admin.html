@@ -8,104 +8,47 @@
   <script type="module" src="admin.js"></script>
 </head>
 <body>
-  <h1>INTERN MATCH ADMIN</h1>
-  
-  <!-- Period Controls Section (move to top of page) -->
-  <div class="section" style="max-width: 400px; margin: 0 auto 1.5em auto;">
-    <h3>Periode</h3>
-    <div class="period-controls">
-      <button id="periodMinus">-</button>
-      <span id="periodDisplay" class="period-box">1</span>
-      <button id="periodPlus">+</button>
+  <div class="top-row">
+    <div class="period-col">
+      <div class="period-controls">
+        <h3>Periode</h3>
+        <button id="periodMinus">-</button>
+        <span id="periodDisplay" class="period-box">1</span>
+        <button id="periodPlus">+</button>
+      </div>
+      <div class="score-controls">
+        <span id="scoreA">0</span>
+        <button id="scoreAPlus">+</button>
+        <button id="scoreAMinus">-</button>
+        <span>:</span>
+        <span id="scoreB">0</span>
+        <button id="scoreBPlus">+</button>
+        <button id="scoreBMinus">-</button>
+      </div>
+    </div>
+    <div class="team-col">
+      <label>Hjemmelag: <input id="teamANameInput" /></label>
+      <label>Bortelag: <input id="teamBNameInput" /></label>
+    </div>
+    <div class="timer-col">
+      <span id="timerDisplay">00:00</span>
+      <input id="timerMinutesInput" type="number" min="1" placeholder="Minutter" />
+      <button id="timerSetBtn">Sett tid</button>
+      <button id="timerStart">Start</button>
+      <button id="timerPause">Pause</button>
+      <button id="timerReset">Nullstill</button>
     </div>
   </div>
 
-  <!-- Team Names -->
-  <div class="section">
-    <label>Lag A: <input id="teamANameInput" /></label>
-    <label>Lag B: <input id="teamBNameInput" /></label>
-  </div>
-
-  <!-- Score and Period -->
-  <div class="section">
-    <span id="scoreA">0</span>
-    <button id="scoreAPlus">+</button>
-    <button id="scoreAMinus">-</button>
-    <span>:</span>
-    <span id="scoreB">0</span>
-    <button id="scoreBPlus">+</button>
-    <button id="scoreBMinus">-</button>
-  </div>
-
-  <!-- Timer -->
-  <div class="section">
-    <span id="timerDisplay">00:00</span>
-    <input id="timerMinutesInput" type="number" min="1" placeholder="Minutter" />
-    <button id="timerSetBtn">Sett tid</button>
-    <button id="timerStart">Start</button>
-    <button id="timerPause">Pause</button>
-    <button id="timerReset">Nullstill</button>
-  </div>
-
-  <!-- Goal Form -->
-  <div class="section">
-    <form id="goalForm">
-      <select id="teamSelect">
-        <option value="A">Lag A</option>
-        <option value="B">Lag B</option>
-      </select>
-      <select id="scorerSelect"></select>
-      <select id="assistSelect"></select>
-      <button type="submit">Registrer mål</button>
-    </form>
-  </div>
-
-  <!-- Live Events -->
-  <div class="section">
-    <h3>Live hendelser</h3>
-    <button id="resetLiveEventsBtn">Nullstill hendelser</button>
-    <button id="archiveEventsBtn">Arkiver hendelser</button>
-    <div id="liveEvents"></div>
-  </div>
-
-  <!-- Players (moved to bottom) -->
-  <div class="section">
-    <div>
-      <h3>Spillere</h3>
-      <ul id="playersAList"></ul>
-      <button id="addPlayerA">Legg til spiller</button>
-    </div>
-    <div>
-      <h3>Spillere</h3>
-      <ul id="playersBList"></ul>
-      <button id="addPlayerB">Legg til spiller</button>
-    </div>
-  </div>
-
-  <!-- Title/Heading -->
-  <div class="section">
-    <label for="titleInput">Tittel/Heading:</label>
-    <input id="titleInput" type="text" />
-  </div>
-
-  <!-- Update Stats Button -->
-  <div class="section">
-    <button id="updateStatsBtn">Oppdater statistikk</button>
-  </div>
-
-  <!-- Keeperseksjon -->
-  <div class="section" style="display: flex; gap: 2em; align-items: flex-start;">
-    <!-- Keeper A -->
-    <div>
+  <div class="keeper-goal-row">
+    <div class="keeper-col">
       <h3>Keeper A</h3>
       <select id="keeperASelect"></select>
-      <button id="changeKeeperA">Bytt</button><br>
+      <button id="changeKeeperA">Bytt</button>
       <button id="saveA">Redning</button>
       <button id="goalAgainstA">Mål imot</button>
     </div>
-
-    <!-- Målregistrering -->
-    <div>
+    <div class="goal-col">
       <h3>Mål</h3>
       <form id="goalForm">
         <select id="teamSelect">
@@ -117,14 +60,32 @@
         <button type="submit">Registrer mål</button>
       </form>
     </div>
-
-    <!-- Keeper B -->
-    <div>
+    <div class="keeper-col">
       <h3>Keeper B</h3>
       <select id="keeperBSelect"></select>
-      <button id="changeKeeperB">Bytt</button><br>
+      <button id="changeKeeperB">Bytt</button>
       <button id="saveB">Redning</button>
       <button id="goalAgainstB">Mål imot</button>
+    </div>
+  </div>
+
+  <div class="live-section">
+    <h3>Live hendelser</h3>
+    <button id="resetLiveEventsBtn">Nullstill hendelser</button>
+    <button id="archiveEventsBtn">Arkiver hendelser</button>
+    <div id="liveEvents"></div>
+  </div>
+
+  <div class="players-section">
+    <div>
+      <h3>Spillere Lag A</h3>
+      <ul id="playersAList"></ul>
+      <button id="addPlayerA">Legg til spiller</button>
+    </div>
+    <div>
+      <h3>Spillere Lag B</h3>
+      <ul id="playersBList"></ul>
+      <button id="addPlayerB">Legg til spiller</button>
     </div>
   </div>
 </body>
