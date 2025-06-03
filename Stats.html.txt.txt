@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spillerstatistikk</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="stats.js"></script>
+</head>
+<body>
+  <button onclick="window.location.href='index.html'" style="margin-bottom:1em;">Tilbake</button>
+  <h1>Spillerstatistikk</h1>
+  <div id="statsView">Laster statistikk...</div>
+</body>
+</html>
