@@ -94,19 +94,35 @@
   </div>
 
   <!-- Keeperseksjon -->
-  <div class="section">
-    <h3>Keeper</h3>
+  <div class="section" style="display: flex; gap: 2em; align-items: flex-start;">
+    <!-- Keeper A -->
     <div>
-      <label for="keeperASelect">Keeper Lag A:</label>
+      <h3>Keeper A</h3>
       <select id="keeperASelect"></select>
-      <button id="changeKeeperA">Bytt keeper</button>
+      <button id="changeKeeperA">Bytt</button><br>
       <button id="saveA">Redning</button>
       <button id="goalAgainstA">Mål imot</button>
     </div>
+
+    <!-- Målregistrering -->
     <div>
-      <label for="keeperBSelect">Keeper Lag B:</label>
+      <h3>Mål</h3>
+      <form id="goalForm">
+        <select id="teamSelect">
+          <option value="A">Lag A</option>
+          <option value="B">Lag B</option>
+        </select>
+        <select id="scorerSelect"></select>
+        <select id="assistSelect"></select>
+        <button type="submit">Registrer mål</button>
+      </form>
+    </div>
+
+    <!-- Keeper B -->
+    <div>
+      <h3>Keeper B</h3>
       <select id="keeperBSelect"></select>
-      <button id="changeKeeperB">Bytt keeper</button>
+      <button id="changeKeeperB">Bytt</button><br>
       <button id="saveB">Redning</button>
       <button id="goalAgainstB">Mål imot</button>
     </div>
