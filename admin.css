@@ -33,7 +33,7 @@ header, h1 {
 }
 
 .section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2em;
 }
 
 label {
@@ -43,23 +43,21 @@ label {
 }
 
 input[type="text"], input[type="number"] {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin-bottom: 0.7rem;
-  width: 100%;
-  box-sizing: border-box;
+  font-size: 1.1em;
+  padding: 0.6em 1em;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  margin-bottom: 0.7em;
 }
 
 button {
-  padding: 0.5rem 1.2rem;
-  margin: 0.2rem 0.2rem 0.2rem 0;
+  font-size: 1.1em;
+  padding: 0.6em 1.5em;
+  border-radius: 6px;
+  margin: 0.2em 0.2em 0.2em 0;
   border: none;
-  border-radius: 8px;
   background: #007aff;
   color: #fff;
-  font-size: 1rem;
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s;
@@ -95,14 +93,30 @@ input[type="text"] {
   min-width: 120px;
 }
 
+select, .section select {
+  min-width: 180px;
+  padding: 0.5em 1em;
+  font-size: 1.1em;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  margin-bottom: 0.7em;
+}
 
-@media (max-width: 600px) {
-  .admin-container {
-    padding: 1rem 0.2rem;
-    max-width: 100%;
+@media (max-width: 767px) {
+  body > * {
+    display: none !important;
   }
-  h1 {
+  body::before {
+    content: "Admin er kun tilgjengelig på PC (desktop).";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     font-size: 1.3rem;
+    color: #b00;
+    padding: 1rem;
+    text-align: center;
+    background: #fff;
   }
 }
 
