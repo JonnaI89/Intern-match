@@ -170,4 +170,34 @@ select, .section select {
   }
 }
 
+.keeper-goal-row {
+  display: flex;
+  gap: 2em;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 2em;
+}
+
+.keeper-col {
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: flex-start;
+}
+
+.goal-col {
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: flex-start;
+}
+
+.keeper-col button, .goal-col button {
+  min-width: 90px;
+  margin-bottom: 0.3em;
+}
+
+
 
