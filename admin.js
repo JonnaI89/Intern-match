@@ -111,7 +111,7 @@ function updatePeriodUI() {
 }
 
 function saveData() {
-  set(rootRef, data);
+  update(rootRef, data); // This will only update the keys in data, not overwrite the whole root
 }
 
 // Timer functions
