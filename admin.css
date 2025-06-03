@@ -87,6 +87,10 @@ ul li {
   display: none !important;
 }
 
+.player-controls button:not(:last-child) {
+  display: none !important;
+}
+
 input[type="text"] {
   min-width: 120px;
 }
