@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const timerMinutesInput = document.getElementById('timerMinutesInput');
   const timerSetBtn = document.getElementById('timerSetBtn');
   const titleInput = document.getElementById('titleInput');
+  const keeperASelect = document.getElementById('keeperASelect');
+  const keeperBSelect = document.getElementById('keeperBSelect');
 
   let data = {
     period: 1,
@@ -28,7 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
       B: { name: 'Lag B', players: [] }
     },
     liveEvents: [],
-    title: 'INTERN MATCH LIVE'
+    title: 'INTERN MATCH LIVE',
+    keepers: { A: '', B: '' }
   };
 
   const rootRef = ref(db, '/');
@@ -417,4 +420,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ...then calculate stats from allEvents as before...
   }
+
+  function updateKeeperDropdowns() {
+    // Oppdater keeper-dropdown for begge lag
+    keeperASelect.innerHTML = data.teams.A.players.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+    keeperBSelect.innerHTML = data.teams.B.players.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+    keeperASelect.value = data.keepers.A || '';
+    keeperBSelect.value = data.keepers.B || '';
+  }
+
+  document.getElementById('changeKeeperA').onclick = () => {
+    data.keepers.A = keeperASelect.value;
+    saveData();
+  };
+  document.getElementById('changeKeeperB').onclick = () => {
+    data.keepers.B = keeperBSelect.value;
+    saveData();
+  };
+
+  // Hent knapper
+  const saveA = document.getElementById('saveA');
+  const goalAgainstA = document.getElementById('goalAgainstA');
+  const saveB = document.getElementById('saveB');
+  const goalAgainstB = document.getElementById('goalAgainstB');
+
+  // Registrer redning for keeper A
+  saveA.onclick = () => {
+    const keeper = data.keepers.A;
+    if (!keeper) return alert("Velg keeper for Lag A først!");
+    data.liveEvents.push({
+      period: data.period,
+      time: timerDisplay.textContent,
+      text: `Save ${keeper}`
+    });
+    saveData();
+    renderLiveEvents();
+  };
+
+  // Registrer mål imot for keeper A
+  goalAgainstA.onclick = () => {
+    const keeper = data.keepers.A;
+    if (!keeper) return alert("Velg keeper for Lag A først!");
+    data.liveEvents.push({
+      period: data.period,
+      time: timerDisplay.textContent,
+      text: `Goal ${keeper}`
+    });
+    saveData();
+    renderLiveEvents();
+  };
+
+  // Registrer redning for keeper B
+  saveB.onclick = () => {
+    const keeper = data.keepers.B;
+    if (!keeper) return alert("Velg keeper for Lag B først!");
+    data.liveEvents.push({
+      period: data.period,
+      time: timerDisplay.textContent,
+      text: `Save ${keeper}`
+    });
+    saveData();
+    renderLiveEvents();
+  };
+
+  // Registrer mål imot for keeper B
+  goalAgainstB.onclick = () => {
+    const keeper = data.keepers.B;
+    if (!keeper) return alert("Velg keeper for Lag B først!");
+    data.liveEvents.push({
+      period: data.period,
+      time: timerDisplay.textContent,
+      text: `Goal ${keeper}`
+    });
+    saveData();
+    renderLiveEvents();
+  };
 });
