@@ -382,3 +382,14 @@ document.getElementById('updateStatsBtn').onclick = function() {
     .then(() => alert('Statistikk oppdatert!'))
     .catch(err => alert('Feil ved oppdatering av statistikk: ' + err));
 };
+data.liveEvents = [
+  { period: 1, time: "05:12", text: "Goal Oliver Assist Hans Peder" },
+  { period: 1, time: "11:05", text: "Goal Liahm" },
+  { period: 1, time: "11:43", text: "Goal Hans Peder Assist Oliver" },
+  { period: 2, time: "15:14", text: "Goal Oliver Assist Linus" },
+  { period: 3, time: "03:59", text: "Goal Hans Peder Assist Linus" },
+  { period: 3, time: "05:18", text: "Goal Anders" },
+  { period: 3, time: "06:03", text: "Goal Oliver" },
+  { period: 3, time: "14:38", text: "Goal Ulrik Assist Samuel" }
+];
+saveData();
