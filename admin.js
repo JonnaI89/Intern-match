@@ -1,5 +1,5 @@
 // admin.js
-import { getDatabase, ref, onValue, set, update, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { db, ref, onValue, set, update, get } from './firebase.js.txt';
 
 // HTML elements
 const teamANameInput = document.getElementById('teamANameInput');
