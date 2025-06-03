@@ -1,5 +1,5 @@
 // admin.js
-import { db, ref, onValue, set, update } from './firebase.js';
+import { db, ref, onValue, set, update, get } from './firebase.js';
 
 // HTML elements
 const teamANameInput = document.getElementById('teamANameInput');
@@ -383,3 +383,27 @@ document.getElementById('updateStatsBtn').onclick = function() {
     .catch(err => alert('Feil ved oppdatering av statistikk: ' + err));
 };
 
+document.getElementById('archiveEventsBtn').onclick = async function() {
+  const dateKey = new Date().toISOString().slice(0,10); // e.g. "2025-06-03"
+  const archiveRef = ref(db, '/archive/' + dateKey);
+
+  // Move current liveEvents to archive
+  await set(archiveRef, data.liveEvents || []);
+  // Clear liveEvents for new match
+  data.liveEvents = [];
+  saveData();
+  alert('Hendelser arkivert!');
+};
+
+async function calculateAllStats() {
+  // Get all archived events
+  const archiveSnap = await get(ref(db, '/archive'));
+  let allEvents = [];
+  if (archiveSnap.exists()) {
+    Object.values(archiveSnap.val()).forEach(arr => allEvents = allEvents.concat(arr));
+  }
+  // Add current liveEvents
+  allEvents = allEvents.concat(data.liveEvents || []);
+
+  // ...then calculate stats from allEvents as before...
+}
