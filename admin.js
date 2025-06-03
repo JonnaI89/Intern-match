@@ -326,8 +326,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const team = teamSelect.value;
     const scorer = scorerSelect.value;
     const assist = assistSelect.value;
-
-    // Use the visible clock as timestamp (what admin sees)
     const time = timerDisplay.textContent;
 
     data.score[team] = (data.score[team] || 0) + 1;
@@ -339,6 +337,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     data.liveEvents = data.liveEvents || [];
     data.liveEvents.push(event);
+
+    // --- Legg til keeper "mål imot"-hendelse automatisk ---
+    // Finn keeper for motstanderlaget
+    const keeperTeam = team === 'A' ? 'B' : 'A';
+    const keeperName = data.keepers[keeperTeam];
+    if (keeperName) {
+      data.liveEvents.push({
+        period: data.period,
+        time: time,
+        text: `Goal ${keeperName}`
+      });
+    }
+    // ------------------------------------------------------
+
     saveData();
     updateScoreUI();
     renderLiveEvents();
