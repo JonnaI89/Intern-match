@@ -454,11 +454,9 @@ document.addEventListener('DOMContentLoaded', () => {
     saveData();
   };
 
-  // Hent knapper
+  // Hent kun redningsknappene
   const saveA = document.getElementById('saveA');
-  const goalAgainstA = document.getElementById('goalAgainstA');
   const saveB = document.getElementById('saveB');
-  const goalAgainstB = document.getElementById('goalAgainstB');
 
   // Registrer redning for keeper A
   saveA.onclick = () => {
@@ -473,19 +471,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderLiveEvents();
   };
 
-  // Registrer mål imot for keeper A
-  goalAgainstA.onclick = () => {
-    const keeper = data.keepers.A;
-    if (!keeper) return alert("Velg keeper for Lag A først!");
-    data.liveEvents.push({
-      period: data.period,
-      time: timerDisplay.textContent,
-      text: `Goal ${keeper}`
-    });
-    saveData();
-    renderLiveEvents();
-  };
-
   // Registrer redning for keeper B
   saveB.onclick = () => {
     const keeper = data.keepers.B;
@@ -494,19 +479,6 @@ document.addEventListener('DOMContentLoaded', () => {
       period: data.period,
       time: timerDisplay.textContent,
       text: `Save ${keeper}`
-    });
-    saveData();
-    renderLiveEvents();
-  };
-
-  // Registrer mål imot for keeper B
-  goalAgainstB.onclick = () => {
-    const keeper = data.keepers.B;
-    if (!keeper) return alert("Velg keeper for Lag B først!");
-    data.liveEvents.push({
-      period: data.period,
-      time: timerDisplay.textContent,
-      text: `Goal ${keeper}`
     });
     saveData();
     renderLiveEvents();
