@@ -354,16 +354,6 @@ periodPlus.onclick = () => {
   saveData();
 };
 
-onValue(ref(db, '/'), (snapshot) => {
-  const dbData = snapshot.val();
-  if (!dbData) return;
-  if (titleInput && dbData.title !== undefined) {
-    titleInput.value = dbData.title;
-  }
-  // Add this to always render the latest live events
-  data.liveEvents = dbData.liveEvents || [];
-  renderLiveEvents();
-});
 if (titleInput) {
   titleInput.addEventListener('input', () => {
     data.title = titleInput.value;
