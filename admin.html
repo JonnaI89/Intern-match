@@ -27,16 +27,21 @@
       </div>
     </div>
     <div class="team-col">
-      <label>Lag A: <input id="teamANameInput" /></label>
-      <label>Lag B: <input id="teamBNameInput" /></label>
+      <label>Hjemmelag:<br><input id="teamANameInput" /></label>
+      <div style="height: 2em;"></div>
+      <label>Bortelag:<br><input id="teamBNameInput" /></label>
     </div>
     <div class="timer-col">
-      <span id="timerDisplay">00:00</span>
-      <input id="timerMinutesInput" type="number" min="1" placeholder="Minutter" />
-      <button id="timerSetBtn">Sett tid</button>
-      <button id="timerStart">Start</button>
-      <button id="timerPause">Pause</button>
-      <button id="timerReset">Nullstill</button>
+      <span id="timerDisplay" style="font-size:2em; font-weight:bold;">00:00</span>
+      <div style="margin-top:1em;">
+        <input id="timerMinutesInput" type="number" min="1" placeholder="Minutter" style="width:90px;" />
+        <button id="timerSetBtn">Sett tid</button>
+      </div>
+      <div style="margin-top:0.5em;">
+        <button id="timerStart">Start</button>
+        <button id="timerPause">Pause</button>
+        <button id="timerReset">Nullstill</button>
+      </div>
     </div>
   </div>
 
