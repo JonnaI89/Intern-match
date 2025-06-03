@@ -1,5 +1,5 @@
 // admin.js
-import { db, ref, onValue, set, update, get } from './firebase.js.txt';
+import { db, ref, onValue, set, update, get } from './firebase.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // HTML elements
