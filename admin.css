@@ -94,12 +94,15 @@ input[type="text"] {
 }
 
 select, .section select {
-  min-width: 180px;
-  padding: 0.5em 1em;
-  font-size: 1.1em;
+  min-width: 240px;
+  width: 100%;
+  max-width: 340px;
+  padding: 0.7em 1.2em;
+  font-size: 1.15em;
   border-radius: 6px;
   border: 1px solid #bbb;
   margin-bottom: 0.7em;
+  box-sizing: border-box;
 }
 
 @media (max-width: 767px) {
