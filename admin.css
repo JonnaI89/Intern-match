@@ -105,6 +105,53 @@ select, .section select {
   box-sizing: border-box;
 }
 
+#goalForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+#goalForm select {
+  min-width: 120px;
+  max-width: 180px;
+  width: auto;
+  padding: 0.4em 0.8em;
+  font-size: 1em;
+  margin-bottom: 0;
+}
+
+#goalForm button[type="submit"] {
+  padding: 0.5em 1.2em;
+  font-size: 1em;
+  margin-left: 0.5em;
+}
+
+.section select:not(#teamSelect):not(#scorerSelect):not(#assistSelect) {
+  min-width: 240px;
+  max-width: 340px;
+  width: 100%;
+  padding: 0.7em 1.2em;
+  font-size: 1.15em;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  margin-bottom: 0.7em;
+  box-sizing: border-box;
+}
+
+/* Optional: make the goal form more compact on small screens */
+@media (max-width: 600px) {
+  #goalForm {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #goalForm select, #goalForm button[type="submit"] {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 767px) {
   body > * {
     display: none !important;
@@ -122,4 +169,5 @@ select, .section select {
     background: #fff;
   }
 }
+
 
