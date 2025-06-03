@@ -170,6 +170,33 @@ select, .section select {
   }
 }
 
+.top-row {
+  display: flex;
+  gap: 2em;
+  align-items: flex-start;
+  margin-bottom: 1.5em;
+}
+.period-col {
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.team-col {
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  margin-left: 2em;
+}
+.timer-col {
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: flex-end;
+  margin-left: 2em;
+}
 .keeper-goal-row {
   display: flex;
   gap: 2em;
@@ -177,27 +204,23 @@ select, .section select {
   justify-content: center;
   margin-bottom: 2em;
 }
-
-.keeper-col {
+.keeper-col, .goal-col {
   min-width: 160px;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
   align-items: flex-start;
 }
-
-.goal-col {
-  min-width: 220px;
+.live-section {
+  margin-bottom: 2em;
+}
+.players-section {
   display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-  align-items: flex-start;
+  gap: 2em;
+  justify-content: center;
 }
-
-.keeper-col button, .goal-col button {
-  min-width: 90px;
-  margin-bottom: 0.3em;
+.players-section > div {
+  min-width: 180px;
 }
-
 
 
