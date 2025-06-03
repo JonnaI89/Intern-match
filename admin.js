@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nameInput.onchange = () => {
         player.name = nameInput.value;
         saveData();
+        updateKeeperDropdowns(); // <-- LEGG TIL HER
       };
 
       const goalsSpan = document.createElement('span');
@@ -87,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         players.splice(i, 1);
         saveData();
         renderPlayers(listEl, players, team);
+        updateKeeperDropdowns(); // <-- LEGG TIL HER
       };
 
       li.appendChild(nameInput);
@@ -264,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveData();
     renderPlayers(playersAList, data.teams.A.players, 'A');
     updateGoalFormDropdowns();
+    updateKeeperDropdowns(); // <-- LEGG TIL HER
   };
 
   document.getElementById('addPlayerB').onclick = () => {
@@ -275,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveData();
     renderPlayers(playersBList, data.teams.B.players, 'B');
     updateGoalFormDropdowns();
+    updateKeeperDropdowns(); // <-- LEGG TIL HER
   };
 
   // Score buttons
