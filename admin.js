@@ -199,7 +199,23 @@ timerReset.onclick = () => {
 onValue(ref(db, '/'), (snapshot) => {
   const dbData = snapshot.val();
   if (!dbData) return;
-  periodDisplay.textContent = dbData.period || 1;
+
+  // Update all fields in the local data object
+  data.period = dbData.period || 1;
+  data.score = dbData.score || { A: 0, B: 0 };
+  data.teams = dbData.teams || { A: { name: 'Lag A', players: [] }, B: { name: 'Lag B', players: [] } };
+  data.liveEvents = dbData.liveEvents || [];
+  data.title = dbData.title || 'INTERN MATCH LIVE';
+
+  // Update UI
+  periodDisplay.textContent = data.period;
+  updateScoreUI();
+  renderPlayers(playersAList, data.teams.A.players, 'A');
+  renderPlayers(playersBList, data.teams.B.players, 'B');
+  renderLiveEvents();
+  if (titleInput) titleInput.value = data.title;
+
+  // Timer
   if (typeof dbData.timer === 'object') {
     timer.secondsElapsed = dbData.timer.secondsElapsed ?? timer.secondsElapsed;
     timer.originalLimit = dbData.timer.originalLimit ?? timer.originalLimit;
