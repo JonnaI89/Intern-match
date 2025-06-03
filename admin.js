@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const rootRef = ref(db, '/');
 
   function renderPlayers(listEl, players, team) {
+    players = players || [];
     listEl.innerHTML = '';
     players.forEach((player, i) => {
       const li = document.createElement('li');
@@ -201,10 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const dbData = snapshot.val();
     if (!dbData) return;
 
-    // Update all fields in the local data object
+    // Defensive: always ensure players arrays exist
     data.period = dbData.period || 1;
     data.score = dbData.score || { A: 0, B: 0 };
     data.teams = dbData.teams || { A: { name: 'Lag A', players: [] }, B: { name: 'Lag B', players: [] } };
+    data.teams.A.players = data.teams.A.players || [];
+    data.teams.B.players = data.teams.B.players || [];
     data.liveEvents = dbData.liveEvents || [];
     data.title = dbData.title || 'INTERN MATCH LIVE';
 
@@ -415,5 +418,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // ...then calculate stats from allEvents as before...
   }
 });
-
-
